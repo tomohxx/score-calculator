@@ -449,7 +449,7 @@ namespace score_calculator::internal {
       cnt += hand.tiles[dora_tiles[tile]];
     }
 
-    if (config.riichi_type != std::nullopt) {
+    if (config.riichi_type) {
       result.update_yaku(YakuId::URA_DORA, cnt);
     }
   }
