@@ -24,7 +24,7 @@ namespace score_calculator {
       reasons_yakuman.insert({yaku_id, num_yakuman});
     }
 
-    bool operator!() const { return (num_fu == 0 || num_han == 0) && num_yakuman == 0; }
+    explicit operator bool() const { return (num_fu > 0 && num_han > 0) || num_yakuman > 0; }
     bool operator<(const Result& rhs) const { return num_han < rhs.num_han || (num_han == rhs.num_han && num_fu < rhs.num_fu); }
     bool operator>(const Result& rhs) const { return num_han > rhs.num_han || (num_han == rhs.num_han && num_fu > rhs.num_fu); }
   };
