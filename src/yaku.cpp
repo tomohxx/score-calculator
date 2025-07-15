@@ -528,6 +528,8 @@ namespace score_calculator::internal {
     chiitoitsu(result, {}, hand, winning_tile, config, false);
     honroutou__chinroutou(result, {}, hand, winning_tile, config, false);
     honiisou__chiniisou(result, {}, hand, winning_tile, config, false);
+    tenhou(result, {}, hand, winning_tile, config, false);
+    chiihou(result, {}, hand, winning_tile, config, false);
     dora(result, {}, hand, winning_tile, config, false);
     ura_dora(result, {}, hand, winning_tile, config, false);
     aka_dora(result, {}, hand, winning_tile, config, false);
