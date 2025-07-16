@@ -9,7 +9,7 @@ namespace score_calculator {
   // 点数の支払い
   struct Payment {
     // 和了者が受け取る点数を計算する
-    virtual int calc_score() const = 0;
+    virtual int calc_score(const Config&) const = 0;
   };
 
   // 自摸和了時の点数の支払い
@@ -19,7 +19,16 @@ namespace score_calculator {
 
     TsumoPayment(const int payment1, const int payment2)
         : payment1(payment1), payment2(payment2) {}
-    int calc_score() const override { return payment2 > 0 ? payment1 * 2 + payment2 : payment1 * 3; }
+
+    int calc_score(const Config& config) const override
+    {
+      if (config.three_player) {
+        return payment2 > 0 ? payment1 + payment2 : payment1 * 2;
+      }
+      else {
+        return payment2 > 0 ? payment1 * 2 + payment2 : payment1 * 3;
+      }
+    }
   };
 
   // ロン和了時の点数の支払い
@@ -27,7 +36,7 @@ namespace score_calculator {
     int payment; // 放銃者が支払う点数
 
     explicit RonPayment(const int payment) : payment(payment) {}
-    int calc_score() const override { return payment; }
+    int calc_score(const Config&) const override { return payment; }
   };
 
   // 点数の支払いを生成するファクトリ関数

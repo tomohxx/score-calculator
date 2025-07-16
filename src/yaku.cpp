@@ -423,17 +423,32 @@ namespace score_calculator::internal {
     }
   }
 
-  constexpr Arr dora_tiles{{m2, m3, m4, m5, m6, m7, m8, m9, m1, // ドラ
-                            p2, p3, p4, p5, p6, p7, p8, p9, p1,
-                            s2, s3, s4, s5, s6, s7, s8, s9, s1,
-                            z2, z3, z4, z1, z6, z7, z5}};
+  constexpr Arr dora_tiles4{{m2, m3, m4, m5, m6, m7, m8, m9, m1, // ドラ(四人麻雀用)
+                             p2, p3, p4, p5, p6, p7, p8, p9, p1,
+                             s2, s3, s4, s5, s6, s7, s8, s9, s1,
+                             z2, z3, z4, z1, z6, z7, z5}};
+
+  constexpr Arr dora_tiles3{{m9, m1, m1, m1, m1, m1, m1, m1, m1, // ドラ(三人麻雀用)
+                             p2, p3, p4, p5, p6, p7, p8, p9, p1,
+                             s2, s3, s4, s5, s6, s7, s8, s9, s1,
+                             z2, z3, z4, z1, z6, z7, z5}};
 
   void dora(Result& result, const Blocks&, const Hand& hand, const Tile&, const Config& config, const bool)
   {
     int cnt = 0;
 
-    for (const auto& tile : config.dora_indicators) {
-      cnt += hand.tiles[dora_tiles[tile]];
+    if (config.three_player) {
+      cnt += config.num_nukidora;
+
+      for (const auto& tile : config.dora_indicators) {
+        cnt += hand.tiles[dora_tiles3[tile]];
+        if (tile == z3) cnt += config.num_nukidora;
+      }
+    }
+    else {
+      for (const auto& tile : config.dora_indicators) {
+        cnt += hand.tiles[dora_tiles4[tile]];
+      }
     }
 
     if (cnt > 0) {
@@ -445,8 +460,16 @@ namespace score_calculator::internal {
   {
     int cnt = 0;
 
-    for (const auto& tile : config.ura_dora_indicators) {
-      cnt += hand.tiles[dora_tiles[tile]];
+    if (config.three_player) {
+      for (const auto& tile : config.ura_dora_indicators) {
+        cnt += hand.tiles[dora_tiles3[tile]];
+        if (tile == z3) cnt += config.num_nukidora;
+      }
+    }
+    else {
+      for (const auto& tile : config.ura_dora_indicators) {
+        cnt += hand.tiles[dora_tiles4[tile]];
+      }
     }
 
     if (config.riichi_type) {

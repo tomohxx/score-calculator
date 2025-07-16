@@ -23,6 +23,8 @@ namespace score_calculator {
     std::optional<RiichiType> riichi_type;             // 立直タイプ(立直/両立直)
     std::optional<RiichiOption> riichi_option;         // 立直オプション(一発)
     std::optional<WinningOption> winning_option;       // 和了オプション(搶槓/嶺上開花/海底撈月/河底撈魚/天和/地和)
+    bool three_player = false;                         // 三人麻雀を有効にするか
+    int num_nukidora = 0;                              // 抜きドラの枚数(三人麻雀無効時は無視される)
   };
 }
 
