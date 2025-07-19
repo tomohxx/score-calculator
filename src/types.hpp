@@ -78,24 +78,6 @@ namespace score_calculator {
     NORTH = north, // 北
   };
 
-  enum class RiichiType {
-    RIICHI,        // 立直
-    DOUBLE_RIICHI, // 両立直
-  };
-
-  enum class RiichiOption {
-    IPPATSU, // 一発
-  };
-
-  enum class WinningOption {
-    CHANKAN,        // 搶槓
-    RINSHAN_KAIHOU, // 嶺上開花
-    HAITEI_RAOYUE,  // 海底撈月
-    HOUTEI_RAOYUI,  // 河底撈魚
-    TENHOU,         // 天和
-    CHIIHOU,        // 地和
-  };
-
   // 役ID
   enum class YakuId {
     MENZENCHIN_TSUMOHOU,      // 面前清自摸和
@@ -153,6 +135,24 @@ namespace score_calculator {
     DORA,                     // ドラ
     URA_DORA,                 // 裏ドラ
     AKA_DORA,                 // 赤ドラ
+  };
+
+  enum class RiichiType {
+    RIICHI = static_cast<int>(YakuId::RIICHI),               // 立直
+    DOUBLE_RIICHI = static_cast<int>(YakuId::DOUBLE_RIICHI), // 両立直
+  };
+
+  enum class RiichiOption {
+    IPPATSU = static_cast<int>(YakuId::IPPATSU), // 一発
+  };
+
+  enum class WinningOption {
+    CHANKAN = static_cast<int>(YakuId::CHANKAN),               // 搶槓
+    RINSHAN_KAIHOU = static_cast<int>(YakuId::RINSHAN_KAIHOU), // 嶺上開花
+    HAITEI_RAOYUE = static_cast<int>(YakuId::HAITEI_RAOYUE),   // 海底撈月
+    HOUTEI_RAOYUI = static_cast<int>(YakuId::HOUTEI_RAOYUI),   // 河底撈魚
+    TENHOU = static_cast<int>(YakuId::TENHOU),                 // 天和
+    CHIIHOU = static_cast<int>(YakuId::CHIIHOU),               // 地和
   };
 
   namespace internal {
