@@ -11,12 +11,10 @@ namespace score_calculator {
 
   // 面子
   enum class MeldType {
-    PON,       // ポン
-    CHI,       // チー
-    KAKAN,     // 加槓
-    DAIMINKAN, // 大明槓
-    ANKAN,     // 暗槓
-    NUKI,      // 抜き北
+    PON,    // ポン
+    CHI,    // チー
+    MINKAN, // 明槓
+    ANKAN,  // 暗槓
   };
 
   namespace internal {
