@@ -17,7 +17,7 @@ namespace score_calculator {
     bool enable_double_yakuman_chuuren_poutou = false; // 純正九蓮宝燈のダブル役満を有効にするか
     bool enable_double_yakuman_kokushi_musou = false;  // 国士無双13面待ちのダブル役満を有効にするか
     bool enable_double_yakuman_daisuushi = false;      // 大四喜のダブル役満を有効にするか
-    bool enable_rounded_up_managan = false;            // 切り上げ満貫を有効にするか
+    bool enable_rounded_up_mangan = false;            // 切り上げ満貫を有効にするか
     bool enable_counted_yakuman = true;                // 数え役満を有効にするか
     bool enable_multiple_yakuman = true;               // 複合役満を有効にするか
     std::optional<RiichiType> riichi_type;             // 立直タイプ(立直/両立直)

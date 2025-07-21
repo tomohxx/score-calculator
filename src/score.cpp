@@ -47,7 +47,7 @@ namespace score_calculator {
 
     int basic_score = calc_basic_score(result, config);
 
-    if (config.enable_rounded_up_managan && basic_score == 1920) {
+    if (config.enable_rounded_up_mangan && basic_score == 1920) {
       basic_score = 2000;
     }
 
