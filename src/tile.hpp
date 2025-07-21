@@ -79,37 +79,37 @@ namespace score_calculator {
   namespace literals {
     inline Tile operator"" _m(unsigned long long index)
     {
-      return index == 0 ? m5r : Tile{static_cast<int>(index)};
+      return index == 0 ? m5r : Tile{static_cast<int>(index) - 1};
     }
 
     inline Tile operator"" _p(unsigned long long index)
     {
-      return index == 0 ? p5r : Tile{static_cast<int>(index + 9)};
+      return index == 0 ? p5r : Tile{static_cast<int>(index) - 1 + 9};
     }
 
     inline Tile operator"" _s(unsigned long long index)
     {
-      return index == 0 ? s5r : Tile{static_cast<int>(index + 18)};
+      return index == 0 ? s5r : Tile{static_cast<int>(index) - 1 + 18};
     }
 
     inline Tile operator"" _z(unsigned long long index)
     {
-      return index + 27;
+      return index - 1 + 27;
     }
 
     inline Tile operator"" _mr(unsigned long long index)
     {
-      return {static_cast<int>(index), true};
+      return {static_cast<int>(index) - 1, true};
     }
 
     inline Tile operator"" _pr(unsigned long long index)
     {
-      return {static_cast<int>(index) + 9, true};
+      return {static_cast<int>(index) - 1 + 9, true};
     }
 
     inline Tile operator"" _sr(unsigned long long index)
     {
-      return {static_cast<int>(index) + 18, true};
+      return {static_cast<int>(index) - 1 + 18, true};
     }
   }
 }
