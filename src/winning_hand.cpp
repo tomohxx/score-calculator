@@ -1,3 +1,4 @@
+// https://tomohxx.github.io/mahjong-algorithm-book/winning_hand/
 #include "winning_hand.hpp"
 #include <cassert>
 #include <numeric>
