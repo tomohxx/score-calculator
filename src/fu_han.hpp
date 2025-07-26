@@ -8,7 +8,12 @@
 #include "types.hpp"
 
 namespace score_calculator {
-  Result calc_fu_han(Hand& hand, const Melds& melds, const Tile& winning_tile, const Config& config, int mode = 0);
+  Result calc_fu_han(Hand& hand,
+                     const Melds& melds,
+                     const Tile& winning_tile,
+                     const Config& config,
+                     int mode = 0,
+                     bool check = false);
 }
 
 #endif

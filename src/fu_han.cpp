@@ -3,6 +3,7 @@
 #include "yaku.hpp"
 #include <cassert>
 #include <iostream>
+#include <numeric>
 #include <stdexcept>
 #include <utility>
 
@@ -35,11 +36,30 @@ namespace score_calculator {
 
   using namespace internal;
 
-  Result calc_fu_han(Hand& hand, const Melds& melds, const Tile& winning_tile, const Config& config, const int mode)
+  Result calc_fu_han(Hand& hand,
+                     const Melds& melds,
+                     const Tile& winning_tile,
+                     const Config& config,
+                     const int mode,
+                     const bool check)
   {
     // 手牌に和了牌が含まれていなければならない
     if (hand.tiles[winning_tile] <= 0) {
       throw std::invalid_argument("Winning tile is not in the hand");
+    }
+
+    // 副露数は4以下でなければならない
+    if (melds.size() > 4u) {
+      throw std::invalid_argument("The number of called melds is more than 4");
+    }
+
+    if (check) {
+      const auto num_melds = static_cast<int>(melds.size());
+
+      // 純手牌の枚数は14 - 副露数 * 3でなければならない
+      if (std::accumulate(hand.tiles.begin(), hand.tiles.end(), 0) != 14 - num_melds * 3) {
+        throw std::invalid_argument("Invalid sum of hand tiles");
+      }
     }
 
     // 副露フラグ
@@ -67,6 +87,15 @@ namespace score_calculator {
       }
 
       whole_hand.draw(meld.get_tiles());
+    }
+
+    if (check) {
+      // 副露を含めた牌の枚数は0以上4以下でなければならない
+      if (std::any_of(whole_hand.tiles.begin(),
+                      whole_hand.tiles.end(),
+                      [](const int x) { return x < 0 || x > 4; })) {
+        throw std::invalid_argument("Invalid number of hand tiles");
+      }
     }
 
     if (mode & 1) {
