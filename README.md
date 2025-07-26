@@ -125,7 +125,7 @@ int main()
 }
 ```
 
-### Double Yakuman
+### Double yakuman
 
 ```cpp
 #include <cassert>
