@@ -110,15 +110,49 @@ int main()
       .is_tsumo = true,
   };
 
-  const auto result = calc_fu_han(hand, {}, z7, config);
+  const auto result = calc_fu_han(hand, {}, z1, config);
 
   assert(result.num_yakuman == 1);
+  assert(result.reasons_yakuman.at(YakuId::KOKUSHI_MUSOU) == 1);
 
   const auto payment = static_cast<TsumoPayment&&>(*calc_payment(result, config));
 
   assert(payment.payment1 == 8000);
   assert(payment.payment2 == 16000);
   assert(payment.calc_score(config) == 32000);
+
+  return EXIT_SUCCESS;
+}
+```
+
+### Double Yakuman
+
+```cpp
+#include <cassert>
+#include <score_calculator/core.hpp>
+using namespace score_calculator;
+
+int main()
+{
+  Hand hand{{m1, m9, p1, p9, s1, s9, z1, z2, z3, z4, z5, z6, z7, z7}};
+
+  const Config config{
+      .seat_wind = WindType::SOUTH,
+      .round_wind = WindType::EAST,
+      .is_tsumo = true,
+      .enable_double_yakuman_kokushi_musou = true,
+  };
+
+  const auto result = calc_fu_han(hand, {}, z7, config);
+
+  assert(result.num_yakuman == 2);
+  assert(result.reasons_yakuman.at(YakuId::KOKUSHI_MUSOU_13MENMACHI) == 2);
+
+  const auto payment = static_cast<TsumoPayment&&>(*calc_payment(result, config));
+
+  assert(payment.payment1 == 16000);
+  assert(payment.payment2 == 32000);
+  assert(payment.calc_score(config) == 64000);
 
   return EXIT_SUCCESS;
 }
