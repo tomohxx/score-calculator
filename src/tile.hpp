@@ -17,7 +17,7 @@ namespace score_calculator {
     bool operator<(const Tile& tile) const { return index < tile.index; }
     bool operator>(const Tile& tile) const { return index > tile.index; }
 
-    constexpr operator int() const { return index; }
+    explicit constexpr operator int() const { return index; }
 
     bool is_suits() const { return index < 27; }
     bool is_simple() const { return index < 27 && index % 9 % 8 != 0; }

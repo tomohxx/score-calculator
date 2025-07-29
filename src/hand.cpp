@@ -4,20 +4,20 @@
 namespace score_calculator {
   Hand& Hand::draw(const Tile& tile)
   {
-    assert(tiles[tile] < 4);
+    assert(tiles[tile.index] < 4);
 
-    ++tiles[tile];
-    if (tile.is_red) ++red_dora[tile];
+    ++tiles[tile.index];
+    if (tile.is_red) ++red_dora[tile.index];
 
     return *this;
   }
 
   Hand& Hand::discard(const Tile& tile)
   {
-    assert(tiles[tile] > 0);
+    assert(tiles[tile.index] > 0);
 
-    --tiles[tile];
-    if (tile.is_red) --red_dora[tile];
+    --tiles[tile.index];
+    if (tile.is_red) --red_dora[tile.index];
 
     return *this;
   }

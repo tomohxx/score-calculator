@@ -70,10 +70,10 @@ namespace score_calculator {
 
   // 風
   enum class WindType {
-    EAST = east,   // 東
-    SOUTH = south, // 南
-    WEST = west,   // 西
-    NORTH = north, // 北
+    EAST = static_cast<int>(east),   // 東
+    SOUTH = static_cast<int>(south), // 南
+    WEST = static_cast<int>(west),   // 西
+    NORTH = static_cast<int>(north), // 北
   };
 
   // 役ID

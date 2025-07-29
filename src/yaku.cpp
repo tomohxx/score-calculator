@@ -10,12 +10,12 @@
 #define UPDATE_DOUBLE_YAKUMAN(yaku_id, condition) result.update_yakuman(YakuId::yaku_id, ((condition) ? DOUBLE_YAKUMAN : SINGLE_YAKUMAN))
 
 namespace score_calculator::internal {
-  constexpr std::array<int, 21u> simple_tiles{{m2, m3, m4, m5, m6, m7, m8, // 中張牌
-                                               p2, p3, p4, p5, p6, p7, p8,
-                                               s2, s3, s4, s5, s6, s7, s8}};
-  constexpr std::array<int, 7u> honor_tiles{{z1, z2, z3, z4, z5, z6, z7}};                                      // 字牌
-  constexpr std::array<int, 6u> terminal_tiles{{m1, m9, p1, p9, s1, s9}};                                       // 老頭牌
-  constexpr std::array<int, 13u> terminal_or_honor_tiles{{m1, m9, p1, p9, s1, s9, z1, z2, z3, z4, z5, z6, z7}}; // 幺九牌
+  constexpr std::array<Tile, 21u> simple_tiles{{m2, m3, m4, m5, m6, m7, m8, // 中張牌
+                                                p2, p3, p4, p5, p6, p7, p8,
+                                                s2, s3, s4, s5, s6, s7, s8}};
+  constexpr std::array<Tile, 7u> honor_tiles{{z1, z2, z3, z4, z5, z6, z7}};                                      // 字牌
+  constexpr std::array<Tile, 6u> terminal_tiles{{m1, m9, p1, p9, s1, s9}};                                       // 老頭牌
+  constexpr std::array<Tile, 13u> terminal_or_honor_tiles{{m1, m9, p1, p9, s1, s9, z1, z2, z3, z4, z5, z6, z7}}; // 幺九牌
 
   void menzenchin_tsumohou(Result& result, const Blocks&, const Hand&, const Tile&, const Config& config, const bool is_open)
   {
@@ -68,8 +68,8 @@ namespace score_calculator::internal {
 
   void tanyaochuu(Result& result, const Blocks&, const Hand& hand, const Tile&, const Config&, const bool)
   {
-    for (const int& tid : terminal_or_honor_tiles) {
-      if (hand.tiles[tid]) return;
+    for (const auto& tile : terminal_or_honor_tiles) {
+      if (hand.tiles[tile.index]) return;
     }
 
     UPDATE_YAKU(TANYAOCHUU);
@@ -81,7 +81,7 @@ namespace score_calculator::internal {
 
     int cnt = 0;
 
-    for (int tid = 0; tid < east; ++tid) {
+    for (int tid = 0; tid < east.index; ++tid) {
       if (blocks[tid].num_closed_sequence >= 2) ++cnt;
     }
 
@@ -159,21 +159,21 @@ namespace score_calculator::internal {
 
   void yakuhai_white(Result& result, const Blocks& blocks, const Hand&, const Tile&, const Config&, const bool)
   {
-    if (exists_triplet(blocks[white])) {
+    if (exists_triplet(blocks[white.index])) {
       UPDATE_YAKU(YAKUHAI_WHITE);
     }
   }
 
   void yakuhai_green(Result& result, const Blocks& blocks, const Hand&, const Tile&, const Config&, const bool)
   {
-    if (exists_triplet(blocks[green])) {
+    if (exists_triplet(blocks[green.index])) {
       UPDATE_YAKU(YAKUHAI_GREEN);
     }
   }
 
   void yakuhai_red(Result& result, const Blocks& blocks, const Hand&, const Tile&, const Config&, const bool)
   {
-    if (exists_triplet(blocks[red])) {
+    if (exists_triplet(blocks[red.index])) {
       UPDATE_YAKU(YAKUHAI_RED);
     }
   }
@@ -195,21 +195,21 @@ namespace score_calculator::internal {
     int cnt = 0;
 
     for (const auto& tile : {m1, m7, p1, p7, s1, s7}) {
-      cnt += get_num_sequence(blocks[tile]);
+      cnt += get_num_sequence(blocks[tile.index]);
     }
 
     if (cnt == 0) return;
 
-    for (const int& tid : terminal_tiles) {
-      if (exists_pair(blocks[tid]) || exists_triplet(blocks[tid])) ++cnt;
+    for (const auto& tile : terminal_tiles) {
+      if (exists_pair(blocks[tile.index]) || exists_triplet(blocks[tile.index])) ++cnt;
     }
 
     if (cnt == 5) {
       return UPDATE_YAKU_KUISAGARI(JUNCHANTAIYAOCHUU);
     }
 
-    for (const int& tid : honor_tiles) {
-      if (exists_pair(blocks[tid]) || exists_triplet(blocks[tid])) ++cnt;
+    for (const auto& tile : honor_tiles) {
+      if (exists_pair(blocks[tile.index]) || exists_triplet(blocks[tile.index])) ++cnt;
     }
 
     if (cnt == 5) {
@@ -273,7 +273,7 @@ namespace score_calculator::internal {
       UPDATE_YAKU(SANANKOU);
     }
     else if (cnt == 4) {
-      if (exists_pair(blocks[winning_tile])) {
+      if (exists_pair(blocks[winning_tile.index])) {
         UPDATE_DOUBLE_YAKUMAN(SUUANKOU_TANKI, config.enable_double_yakuman_suuankou);
       }
       else {
@@ -286,14 +286,14 @@ namespace score_calculator::internal {
   {
     int cnt = 0;
 
-    for (const auto& tid : {z5, z6, z7}) {
-      if (exists_triplet(blocks[tid])) ++cnt;
+    for (const auto& tile : {z5, z6, z7}) {
+      if (exists_triplet(blocks[tile.index])) ++cnt;
     }
 
     if (cnt == 3) {
       UPDATE_SINGLE_YAKUMAN(DAISANGEN);
     }
-    else if (cnt == 2 && (exists_pair(blocks[z5]) || exists_pair(blocks[z6]) || exists_pair(blocks[z7]))) {
+    else if (cnt == 2 && (exists_pair(blocks[z5.index]) || exists_pair(blocks[z6.index]) || exists_pair(blocks[z7.index]))) {
       UPDATE_YAKU(SHOUSANGEN);
     }
   }
@@ -302,14 +302,14 @@ namespace score_calculator::internal {
   {
     int cnt = 0;
 
-    for (const int& tid : simple_tiles) {
-      if (hand.tiles[tid] > 0) ++cnt;
+    for (const auto& tile : simple_tiles) {
+      if (hand.tiles[tile.index] > 0) ++cnt;
     }
 
     if (cnt > 0) return;
 
-    for (const int tid : honor_tiles) {
-      if (hand.tiles[tid] > 0) ++cnt;
+    for (const auto& tile : honor_tiles) {
+      if (hand.tiles[tile.index] > 0) ++cnt;
     }
 
     if (cnt > 0) {
@@ -363,10 +363,10 @@ namespace score_calculator::internal {
     int cnt = 0;
 
     for (const auto& tile : {s2, s3, s4, s6, s8, z6}) {
-      if (exists_pair(blocks[tile]) || exists_triplet(blocks[tile])) ++cnt;
+      if (exists_pair(blocks[tile.index]) || exists_triplet(blocks[tile.index])) ++cnt;
     }
 
-    cnt += get_num_sequence(blocks[s2]);
+    cnt += get_num_sequence(blocks[s2.index]);
 
     if (cnt == 5) {
       UPDATE_SINGLE_YAKUMAN(RYUUIISOU);
@@ -386,7 +386,7 @@ namespace score_calculator::internal {
         }
 
         if (std::accumulate(&hand.tiles[9 * i], &hand.tiles[9 * i + 9], 0) == 14) {
-          if (hand.tiles[winning_tile] == 1 || hand.tiles[winning_tile] == 3) {
+          if (hand.tiles[winning_tile.index] == 1 || hand.tiles[winning_tile.index] == 3) {
             return UPDATE_SINGLE_YAKUMAN(CHUUREN_POUTOU);
           }
           else {
@@ -399,7 +399,7 @@ namespace score_calculator::internal {
 
   void kokushi_musou(Result& result, const Blocks&, const Hand& hand, const Tile& winning_tile, const Config& config, const bool)
   {
-    if (hand.tiles[winning_tile] == 1) {
+    if (hand.tiles[winning_tile.index] == 1) {
       UPDATE_SINGLE_YAKUMAN(KOKUSHI_MUSOU);
     }
     else {
@@ -412,26 +412,26 @@ namespace score_calculator::internal {
     int cnt = 0;
 
     for (const auto& tile : {z1, z2, z3, z4}) {
-      if (exists_triplet(blocks[tile])) ++cnt;
+      if (exists_triplet(blocks[tile.index])) ++cnt;
     }
 
     if (cnt == 4) {
       UPDATE_DOUBLE_YAKUMAN(DAISUUSHII, config.enable_double_yakuman_daisuushi);
     }
-    else if (cnt == 3 && (exists_pair(blocks[z1]) || exists_pair(blocks[z2]) || exists_pair(blocks[z3]) || exists_pair(blocks[z4]))) {
+    else if (cnt == 3 && (exists_pair(blocks[z1.index]) || exists_pair(blocks[z2.index]) || exists_pair(blocks[z3.index]) || exists_pair(blocks[z4.index]))) {
       UPDATE_SINGLE_YAKUMAN(SHOUSUUSHII);
     }
   }
 
-  constexpr Arr dora_tiles4{{m2, m3, m4, m5, m6, m7, m8, m9, m1, // ドラ(四人麻雀用)
-                             p2, p3, p4, p5, p6, p7, p8, p9, p1,
-                             s2, s3, s4, s5, s6, s7, s8, s9, s1,
-                             z2, z3, z4, z1, z6, z7, z5}};
+  constexpr std::array<Tile, NUM_TIDS> dora_tiles4{{m2, m3, m4, m5, m6, m7, m8, m9, m1, // ドラ(四人麻雀用)
+                                                    p2, p3, p4, p5, p6, p7, p8, p9, p1,
+                                                    s2, s3, s4, s5, s6, s7, s8, s9, s1,
+                                                    z2, z3, z4, z1, z6, z7, z5}};
 
-  constexpr Arr dora_tiles3{{m9, m1, m1, m1, m1, m1, m1, m1, m1, // ドラ(三人麻雀用)
-                             p2, p3, p4, p5, p6, p7, p8, p9, p1,
-                             s2, s3, s4, s5, s6, s7, s8, s9, s1,
-                             z2, z3, z4, z1, z6, z7, z5}};
+  constexpr std::array<Tile, NUM_TIDS> dora_tiles3{{m9, m1, m1, m1, m1, m1, m1, m1, m1, // ドラ(三人麻雀用)
+                                                    p2, p3, p4, p5, p6, p7, p8, p9, p1,
+                                                    s2, s3, s4, s5, s6, s7, s8, s9, s1,
+                                                    z2, z3, z4, z1, z6, z7, z5}};
 
   void dora(Result& result, const Blocks&, const Hand& hand, const Tile&, const Config& config, const bool)
   {
@@ -441,13 +441,13 @@ namespace score_calculator::internal {
       cnt += config.num_nukidora;
 
       for (const auto& tile : config.dora_indicators) {
-        cnt += hand.tiles[dora_tiles3[tile]];
+        cnt += hand.tiles[dora_tiles3[tile.index].index];
         if (tile == z3) cnt += config.num_nukidora;
       }
     }
     else {
       for (const auto& tile : config.dora_indicators) {
-        cnt += hand.tiles[dora_tiles4[tile]];
+        cnt += hand.tiles[dora_tiles4[tile.index].index];
       }
     }
 
@@ -462,13 +462,13 @@ namespace score_calculator::internal {
 
     if (config.three_player) {
       for (const auto& tile : config.ura_dora_indicators) {
-        cnt += hand.tiles[dora_tiles3[tile]];
+        cnt += hand.tiles[dora_tiles3[tile.index].index];
         if (tile == z3) cnt += config.num_nukidora;
       }
     }
     else {
       for (const auto& tile : config.ura_dora_indicators) {
-        cnt += hand.tiles[dora_tiles4[tile]];
+        cnt += hand.tiles[dora_tiles4[tile.index].index];
       }
     }
 

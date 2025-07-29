@@ -44,7 +44,7 @@ namespace score_calculator {
                      const bool check)
   {
     // 手牌に和了牌が含まれていなければならない
-    if (hand.tiles[winning_tile] <= 0) {
+    if (hand.tiles[winning_tile.index] <= 0) {
       throw std::invalid_argument("Winning tile is not in the hand");
     }
 
@@ -182,29 +182,29 @@ namespace score_calculator {
 
     bool is_open_wait(const Blocks& blocks, const Tile& tile)
     {
-      return tile < east && ((tile % 9 < 6 && blocks[tile].num_closed_sequence) ||
-                             (tile % 9 > 2 && blocks[tile - 2].num_closed_sequence));
+      return tile < east && ((tile.index % 9 < 6 && blocks[tile.index].num_closed_sequence) ||
+                             (tile.index % 9 > 2 && blocks[tile.index - 2].num_closed_sequence));
     }
 
     bool is_edge_wait(const Blocks& blocks, const Tile& tile)
     {
-      return tile < east && ((tile % 9 == 6 && blocks[tile].num_closed_sequence) ||
-                             (tile % 9 == 2 && blocks[tile - 2].num_closed_sequence));
+      return tile < east && ((tile.index % 9 == 6 && blocks[tile.index].num_closed_sequence) ||
+                             (tile.index % 9 == 2 && blocks[tile.index - 2].num_closed_sequence));
     }
 
     bool is_closed_wait(const Blocks& blocks, const Tile& tile)
     {
-      return tile < east && tile % 9 >= 1 && tile % 9 <= 7 && blocks[tile - 1].num_closed_sequence;
+      return tile < east && tile.index % 9 >= 1 && tile.index % 9 <= 7 && blocks[tile.index - 1].num_closed_sequence;
     }
 
     bool is_pair_wait(const Blocks& blocks, const Tile& tile)
     {
-      return blocks[tile].num_pair;
+      return blocks[tile.index].num_pair;
     }
 
     bool is_dual_wait(const Blocks& blocks, const Tile& tile)
     {
-      return blocks[tile].num_closed_triplet;
+      return blocks[tile.index].num_closed_triplet;
     }
 
     std::pair<int, bool> standard::calc_fu(Blocks& blocks, const Tile& winning_tile, const Config& config, const bool is_open)
@@ -219,7 +219,7 @@ namespace score_calculator {
       }
 
       // 雀頭の符を計算する(三元牌)
-      if (exists_pair(blocks[white]) || exists_pair(blocks[green]) || exists_pair(blocks[red])) {
+      if (exists_pair(blocks[white.index]) || exists_pair(blocks[green.index]) || exists_pair(blocks[red.index])) {
         num_fu += 2;
       }
 
@@ -253,8 +253,8 @@ namespace score_calculator {
           // シャンポン待ちは0符
           // ロン和了のとき暗刻を明刻にする
           if (!config.is_tsumo) {
-            blocks[winning_tile].num_closed_triplet = 0;
-            blocks[winning_tile].num_open_triplet = 1;
+            blocks[winning_tile.index].num_closed_triplet = 0;
+            blocks[winning_tile.index].num_open_triplet = 1;
             num_fu -= (winning_tile.is_simple() ? 2 : 4);
           }
         }
