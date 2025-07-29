@@ -15,6 +15,7 @@ namespace score_calculator {
     Hand(const Arr& tiles, const Arr& red_dora)
         : tiles{tiles}, red_dora{red_dora} {}
     explicit Hand(const Tiles& tiles) { draw(tiles); }
+    explicit Hand(const std::vector<int>& tiles) { std::copy(tiles.begin(), tiles.end(), this->tiles.begin()); }
 
     Hand& draw(const Tile& tile);
     Hand& discard(const Tile& tile);
