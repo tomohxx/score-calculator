@@ -50,7 +50,12 @@ namespace score_calculator {
 
     // 副露数は4以下でなければならない
     if (melds.size() > 4u) {
-      throw std::invalid_argument("The number of called melds is more than 4");
+      throw std::invalid_argument("Invalid number of called melds");
+    }
+
+    // 抜きドラの枚数は0以上4以下でなければならない
+    if (config.three_player && (config.num_nukidora < 0 || config.num_nukidora > 4)) {
+      throw std::invalid_argument("Invalid number of nukidora");
     }
 
     if (check) {
