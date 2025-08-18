@@ -228,7 +228,7 @@ int main()
 }
 ```
 
-## Building Hand tiles from *mpsz* string
+## Building hand tiles from *mpsz* string
 
 ```cpp
 #include <cassert>
