@@ -9,6 +9,12 @@
 
 namespace score_calculator {
   namespace internal {
+    void validate(Hand& hand,
+                  const Melds& melds,
+                  const Tile& winning_tile,
+                  const Config& config,
+                  const bool check);
+
     namespace standard {
       Result calc_fu_han(const Blocks& closed_blocks,
                          const Blocks& open_blocks,
@@ -43,29 +49,7 @@ namespace score_calculator {
                      const int mode,
                      const bool check)
   {
-    // 手牌に和了牌が含まれていなければならない
-    if (hand.tiles[winning_tile.index] <= 0) {
-      throw std::invalid_argument("Winning tile is not in the hand");
-    }
-
-    // 副露数は4以下でなければならない
-    if (melds.size() > 4u) {
-      throw std::invalid_argument("Invalid number of called melds");
-    }
-
-    // 抜きドラの枚数は0以上4以下でなければならない
-    if (config.three_player && (config.num_nukidora < 0 || config.num_nukidora > 4)) {
-      throw std::invalid_argument("Invalid number of nukidora");
-    }
-
-    if (check) {
-      const auto num_melds = static_cast<int>(melds.size());
-
-      // 純手牌の枚数は14 - 副露数 * 3でなければならない
-      if (std::accumulate(hand.tiles.begin(), hand.tiles.end(), 0) != 14 - num_melds * 3) {
-        throw std::invalid_argument("Invalid sum of hand tiles");
-      }
-    }
+    validate(hand, melds, winning_tile, config, check);
 
     // 副露フラグ
     const bool is_open = std::count_if(melds.begin(), melds.end(), [](const Meld& meld) {
@@ -134,6 +118,47 @@ namespace score_calculator {
   }
 
   namespace internal {
+    void validate(Hand& hand,
+                  const Melds& melds,
+                  const Tile& winning_tile,
+                  const Config& config,
+                  const bool check)
+    {
+      // 手牌に和了牌が含まれていなければならない
+      if (hand.tiles[winning_tile.index] <= 0) {
+        throw std::invalid_argument("Winning tile is not in the hand");
+      }
+
+      // 副露数は4以下でなければならない
+      if (melds.size() > 4u) {
+        throw std::invalid_argument("Invalid number of called melds");
+      }
+
+      // 抜きドラの枚数は0以上4以下でなければならない
+      if (config.three_player && (config.num_nukidora < 0 || config.num_nukidora > 4)) {
+        throw std::invalid_argument("Invalid number of nukidora");
+      }
+
+      if (check) {
+        const auto num_melds = static_cast<int>(melds.size());
+
+        // 純手牌の枚数は14 - 副露数 * 3でなければならない
+        if (std::accumulate(hand.tiles.begin(), hand.tiles.end(), 0) != 14 - num_melds * 3) {
+          throw std::invalid_argument("Invalid sum of hand tiles");
+        }
+
+        // 三人麻雀が有効のとき手牌に2mから8mが存在してはいけない
+        if (config.three_player && std::accumulate(&hand.tiles[1], &hand.tiles[8], 0) != 0) {
+          throw std::invalid_argument("Invalid tile");
+        }
+
+        // 副露タイプと牌構成に矛盾が存在してはいけない
+        if (!std::all_of(melds.begin(), melds.end(), [](const Meld& meld) { return meld; })) {
+          throw std::invalid_argument("Invalid meld");
+        }
+      }
+    }
+
     Result standard::calc_fu_han(const Blocks& closed_blocks,
                                  const Blocks& open_blocks,
                                  const Hand& whole_hand,
