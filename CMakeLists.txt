@@ -7,6 +7,8 @@ find_package(GTest REQUIRED)
 set(SCORE_CALCULATOR_SOURCES
   src/fu_han.cpp
   src/hand.cpp
+  src/meld.cpp
+  src/parser.cpp
   src/winning_hand.cpp
   src/yaku.cpp)
 
@@ -16,6 +18,7 @@ set(SCORE_CALCULATOR_HEADERS
   src/fu_han.hpp
   src/hand.hpp
   src/meld.hpp
+  src/parser.hpp
   src/result.hpp
   src/score.cpp
   src/score.hpp
@@ -46,6 +49,7 @@ enable_testing()
 
 add_executable(score_calculator_test
   tests/fu_han_test.cpp
+  tests/parser_test.cpp
   tests/score_test.cpp
   tests/winning_hand_test.cpp)
 target_include_directories(score_calculator_test PRIVATE src)

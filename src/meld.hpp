@@ -2,6 +2,8 @@
 #define SCORE_CALCULATOR_MELD_HPP
 
 #include "tile.hpp"
+#include "types.hpp"
+#include <algorithm>
 #include <vector>
 
 namespace score_calculator {
@@ -9,22 +11,28 @@ namespace score_calculator {
   private:
     MeldType meld_type;
     Tiles tiles;
-    int min_index;
 
   public:
     Meld(const MeldType& meld_type, const Tiles& tiles) : meld_type(meld_type), tiles(tiles)
     {
-      min_index = std::min_element(tiles.begin(), tiles.end())->index;
+      std::sort(this->tiles.begin(), this->tiles.end());
     }
 
     const MeldType& get_meld_type() const { return meld_type; }
     const Tiles& get_tiles() const { return tiles; }
-    const int& get_min_index() const { return min_index; }
+    const int& get_min_index() const { return tiles[0].index; }
 
     bool operator==(const Meld& rhs) const { return meld_type == rhs.meld_type && tiles == rhs.tiles; }
+    operator bool() const;
+    Suits get_suit() const { return static_cast<Suits>(tiles[0].index / 9); }
   };
 
   using Melds = std::vector<Meld>;
+
+  namespace internal {
+    Meld make_pon_chi_minkan(const Tiles& tiles);
+    Meld make_ankan(const Tiles& tiles);
+  }
 
   inline const Meld pon_m111{MeldType::PON, {m1, m1, m1}};
   inline const Meld pon_m222{MeldType::PON, {m2, m2, m2}};
