@@ -5,8 +5,9 @@ using namespace score_calculator;
 TEST(Parser, TestFromMPSZ)
 {
   Hand hand1;
-  const Hand hand2{{m1, m2, m3, m4, m0, m5, m6, m7, m8, m9, p1, p2, p3, s1, s2, s3}};
   Melds melds1;
+
+  const Hand hand2{{m1, m2, m3, m4, m0, m5, m6, m7, m8, m9, p1, p2, p3, s1, s2, s3}};
   const Melds melds2{
       {MeldType::PON, {m1, m1, m1}},
       {MeldType::CHI, {m4, m5, m6}},
