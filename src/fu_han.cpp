@@ -134,6 +134,16 @@ namespace score_calculator {
         throw std::invalid_argument("Invalid number of called melds");
       }
 
+      // ドラ表示牌の枚数は4以下でなければならない
+      if (config.dora_indicators.size() > 4u) {
+        throw std::invalid_argument("Invalid number of dora indicators");
+      }
+
+      // 裏ドラ表示牌の枚数は4以下でなければならない
+      if (config.ura_dora_indicators.size() > 4u) {
+        throw std::invalid_argument("Invalid number of ura-dora indicators");
+      }
+
       // 抜きドラの枚数は0以上4以下でなければならない
       if (config.three_player && (config.num_nukidora < 0 || config.num_nukidora > 4)) {
         throw std::invalid_argument("Invalid number of nukidora");
