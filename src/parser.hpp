@@ -7,6 +7,7 @@
 #include <string>
 
 namespace score_calculator {
+  Tiles from_mpsz(const std::string&);
   void from_mpsz(const std::string&, Hand&, Melds&);
   std::string to_mpsz(const Hand&, const Melds& = {});
 }

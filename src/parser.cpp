@@ -5,29 +5,27 @@
 #include <stdexcept>
 
 namespace score_calculator {
-  namespace internal {
-    Tiles from_mpsz(const std::string& str_mpsz)
-    {
-      Tiles tiles;
-      int offset = 0;
+  Tiles from_mpsz(const std::string& str_mpsz)
+  {
+    Tiles tiles;
+    int offset = 0;
 
-      for (auto it = str_mpsz.crbegin(); it != str_mpsz.crend(); ++it) {
-        if (*it == '0') {
-          tiles.emplace_back(4 + offset, true);
-        }
-        else if (*it >= '1' && *it <= '9') {
-          tiles.emplace_back(*it - '1' + offset, false);
-        }
-        else if (*it == 'm') offset = 0;
-        else if (*it == 'p') offset = 9;
-        else if (*it == 's') offset = 18;
-        else if (*it == 'z') offset = 27;
+    for (auto it = str_mpsz.crbegin(); it != str_mpsz.crend(); ++it) {
+      if (*it == '0') {
+        tiles.emplace_back(4 + offset, true);
       }
-
-      std::reverse(tiles.begin(), tiles.end());
-
-      return tiles;
+      else if (*it >= '1' && *it <= '9') {
+        tiles.emplace_back(*it - '1' + offset, false);
+      }
+      else if (*it == 'm') offset = 0;
+      else if (*it == 'p') offset = 9;
+      else if (*it == 's') offset = 18;
+      else if (*it == 'z') offset = 27;
     }
+
+    std::reverse(tiles.begin(), tiles.end());
+
+    return tiles;
   }
 
   void from_mpsz(const std::string& str_mpsz, Hand& hand, Melds& melds)
@@ -36,7 +34,7 @@ namespace score_calculator {
 
     for (std::sregex_iterator it(std::begin(str_mpsz), std::end(str_mpsz), re), end; it != end; ++it) {
       const auto str = it->str();
-      const auto tiles = internal::from_mpsz(str);
+      const auto tiles = from_mpsz(str);
       // 暗槓
       if (str.starts_with("[[") && str.ends_with("]]")) {
         melds.push_back(internal::make_ankan(tiles));
