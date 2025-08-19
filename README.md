@@ -228,6 +228,35 @@ int main()
 }
 ```
 
+## Building hand tiles from *mpsz* string
+
+```cpp
+#include <cassert>
+#include <score_calculator/core.hpp>
+using namespace score_calculator;
+
+int main()
+{
+  Hand hand1;
+  Melds melds1;
+
+  const Hand hand2{{p9, p9}};
+  const Melds melds2{
+      {MeldType::CHI, {m1, m2, m3}},
+      {MeldType::PON, {m9, m9, m9}},
+      {MeldType::MINKAN, {p1, p1, p1, p1}},
+      {MeldType::ANKAN, {z1, z1, z1, z1}},
+  };
+
+  from_mpsz("99p[123m][999m][1111p][[1111z]]", hand1, melds1);
+
+  assert(hand1 == hand2);
+  assert(melds1 == melds2);
+
+  return EXIT_SUCCESS;
+}
+```
+
 ## Configulations
 
 General rules(including three-player mahjong) are supported. See [config.hpp](src/config.hpp) for details.

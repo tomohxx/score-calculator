@@ -1,7 +1,6 @@
 #ifndef SCORE_CALCULATOR_TYPES_HPP
 #define SCORE_CALCULATOR_TYPES_HPP
 
-#include "tile.hpp"
 #include <array>
 
 namespace score_calculator {
@@ -70,10 +69,18 @@ namespace score_calculator {
 
   // 風
   enum class WindType {
-    EAST = static_cast<int>(east),   // 東
-    SOUTH = static_cast<int>(south), // 南
-    WEST = static_cast<int>(west),   // 西
-    NORTH = static_cast<int>(north), // 北
+    EAST = 27,  // 東
+    SOUTH = 28, // 南
+    WEST = 29,  // 西
+    NORTH = 30, // 北
+  };
+
+  // 牌種
+  enum class Suits {
+    MANZU, // 萬子
+    PINZU, // 筒子
+    SOUZU, // 索子
+    ZIHAI, // 字牌
   };
 
   // 役ID
