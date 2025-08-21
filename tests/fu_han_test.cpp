@@ -14,7 +14,7 @@ TEST(FuHan, TestInvalidWinningTile)
       .is_tsumo = false,
   };
 
-  EXPECT_THROW(calc_fu_han(hand, {}, m1, config, 0), std::invalid_argument);
+  EXPECT_THROW(calc_fu_han(hand, {}, m1, config, 0, true), std::invalid_argument);
 }
 
 // 平和ツモ
