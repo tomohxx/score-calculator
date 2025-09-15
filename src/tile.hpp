@@ -16,6 +16,8 @@ namespace score_calculator {
     bool operator==(const Tile& tile) const { return index == tile.index; }
     bool operator<(const Tile& tile) const { return index < tile.index; }
     bool operator>(const Tile& tile) const { return index > tile.index; }
+    bool operator<=(const Tile& tile) const { return index <= tile.index; }
+    bool operator>=(const Tile& tile) const { return index >= tile.index; }
 
     explicit constexpr operator int() const { return index; }
 
