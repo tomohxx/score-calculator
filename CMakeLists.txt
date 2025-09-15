@@ -57,6 +57,7 @@ target_link_libraries(score_calculator_test PRIVATE
   score_calculator
   GTest::GTest
   GTest::Main)
+target_compile_options(score_calculator_test PRIVATE -Wno-missing-field-initializers)
 
 include(GoogleTest)
 gtest_discover_tests(score_calculator_test)
