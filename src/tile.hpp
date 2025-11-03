@@ -9,6 +9,7 @@ namespace score_calculator {
     int index{};
     bool is_red{};
 
+    constexpr Tile() = default;
     constexpr Tile(const int index) : index(index), is_red(false) {}
     constexpr Tile(const int index, const bool is_red) : index(index), is_red(is_red) {}
     constexpr Tile(const std::pair<int, bool>& tile) : index(tile.first), is_red(tile.second) {}
