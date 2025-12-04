@@ -69,10 +69,10 @@ namespace score_calculator {
 
   // 風
   enum class WindType {
-    EAST = 27,  // 東
-    SOUTH = 28, // 南
-    WEST = 29,  // 西
-    NORTH = 30, // 北
+    EAST,  // 東
+    SOUTH, // 南
+    WEST,  // 西
+    NORTH, // 北
   };
 
   // 牌種

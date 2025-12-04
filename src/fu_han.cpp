@@ -257,11 +257,11 @@ namespace score_calculator {
 
       // 雀頭の符を計算する(風牌)
       if (config.is_2fu_double_wind) {
-        num_fu += (exists_pair(blocks[static_cast<int>(config.seat_wind)]) || exists_pair(blocks[static_cast<int>(config.round_wind)]) ? 2 : 0);
+        num_fu += (exists_pair(blocks[static_cast<int>(config.seat_wind) + static_cast<int>(east)]) || exists_pair(blocks[static_cast<int>(config.round_wind) + static_cast<int>(east)]) ? 2 : 0);
       }
       else {
-        num_fu += (exists_pair(blocks[static_cast<int>(config.seat_wind)]) ? 2 : 0);
-        num_fu += (exists_pair(blocks[static_cast<int>(config.round_wind)]) ? 2 : 0);
+        num_fu += (exists_pair(blocks[static_cast<int>(config.seat_wind) + static_cast<int>(east)]) ? 2 : 0);
+        num_fu += (exists_pair(blocks[static_cast<int>(config.round_wind) + static_cast<int>(east)]) ? 2 : 0);
       }
 
       // 両面待ちフラグ

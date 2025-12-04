@@ -95,64 +95,56 @@ namespace score_calculator::internal {
 
   void yakuhai_east_seat(Result& result, const Blocks& blocks, const Hand&, const Tile&, const Config& config, const bool)
   {
-    if (static_cast<int>(config.seat_wind) == static_cast<int>(east) &&
-        exists_triplet(blocks[static_cast<int>(config.seat_wind)])) {
+    if (config.seat_wind == WindType::EAST && exists_triplet(blocks[static_cast<int>(config.seat_wind) + static_cast<int>(east)])) {
       UPDATE_YAKU(YAKUHAI_EAST_SEAT);
     }
   }
 
   void yakuhai_south_seat(Result& result, const Blocks& blocks, const Hand&, const Tile&, const Config& config, const bool)
   {
-    if (static_cast<int>(config.seat_wind) == static_cast<int>(south) &&
-        exists_triplet(blocks[static_cast<int>(config.seat_wind)])) {
+    if (config.seat_wind == WindType::SOUTH && exists_triplet(blocks[static_cast<int>(config.seat_wind) + static_cast<int>(east)])) {
       UPDATE_YAKU(YAKUHAI_SOUTH_SEAT);
     }
   }
 
   void yakuhai_west_seat(Result& result, const Blocks& blocks, const Hand&, const Tile&, const Config& config, const bool)
   {
-    if (static_cast<int>(config.seat_wind) == static_cast<int>(west) &&
-        exists_triplet(blocks[static_cast<int>(config.seat_wind)])) {
+    if (config.seat_wind == WindType::WEST && exists_triplet(blocks[static_cast<int>(config.seat_wind) + static_cast<int>(east)])) {
       UPDATE_YAKU(YAKUHAI_WEST_SEAT);
     }
   }
 
   void yakuhai_north_seat(Result& result, const Blocks& blocks, const Hand&, const Tile&, const Config& config, const bool)
   {
-    if (static_cast<int>(config.seat_wind) == static_cast<int>(north) &&
-        exists_triplet(blocks[static_cast<int>(config.seat_wind)])) {
+    if (config.seat_wind == WindType::NORTH && exists_triplet(blocks[static_cast<int>(config.seat_wind) + static_cast<int>(east)])) {
       UPDATE_YAKU(YAKUHAI_NORTH_SEAT);
     }
   }
 
   void yakuhai_east_round(Result& result, const Blocks& blocks, const Hand&, const Tile&, const Config& config, const bool)
   {
-    if (static_cast<int>(config.round_wind) == static_cast<int>(east) &&
-        exists_triplet(blocks[static_cast<int>(config.round_wind)])) {
+    if (config.round_wind == WindType::EAST && exists_triplet(blocks[static_cast<int>(config.round_wind) + static_cast<int>(east)])) {
       UPDATE_YAKU(YAKUHAI_EAST_ROUND);
     }
   }
 
   void yakuhai_south_round(Result& result, const Blocks& blocks, const Hand&, const Tile&, const Config& config, const bool)
   {
-    if (static_cast<int>(config.round_wind) == static_cast<int>(south) &&
-        exists_triplet(blocks[static_cast<int>(config.round_wind)])) {
+    if (config.round_wind == WindType::SOUTH && exists_triplet(blocks[static_cast<int>(config.round_wind) + static_cast<int>(east)])) {
       UPDATE_YAKU(YAKUHAI_SOUTH_ROUND);
     }
   }
 
   void yakuhai_west_round(Result& result, const Blocks& blocks, const Hand&, const Tile&, const Config& config, const bool)
   {
-    if (static_cast<int>(config.round_wind) == static_cast<int>(west) &&
-        exists_triplet(blocks[static_cast<int>(config.round_wind)])) {
+    if (config.round_wind == WindType::WEST && exists_triplet(blocks[static_cast<int>(config.round_wind) + static_cast<int>(east)])) {
       UPDATE_YAKU(YAKUHAI_WEST_ROUND);
     }
   }
 
   void yakuhai_north_round(Result& result, const Blocks& blocks, const Hand&, const Tile&, const Config& config, const bool)
   {
-    if (static_cast<int>(config.round_wind) == static_cast<int>(north) &&
-        exists_triplet(blocks[static_cast<int>(config.round_wind)])) {
+    if (config.round_wind == WindType::NORTH && exists_triplet(blocks[static_cast<int>(config.round_wind) + static_cast<int>(east)])) {
       UPDATE_YAKU(YAKUHAI_NORTH_ROUND);
     }
   }
