@@ -15,14 +15,13 @@ namespace score_calculator {
   public:
     Meld(const MeldType& meld_type, const Tiles& tiles) : meld_type(meld_type), tiles(tiles)
     {
-      std::sort(this->tiles.begin(), this->tiles.end());
+      std::sort(this->tiles.begin(), this->tiles.end(), [](const Tile& x, const Tile& y) { return x.index < y.index; });
     }
 
     const MeldType& get_meld_type() const { return meld_type; }
     const Tiles& get_tiles() const { return tiles; }
     const int& get_min_index() const { return tiles[0].index; }
 
-    bool operator==(const Meld& rhs) const { return meld_type == rhs.meld_type && tiles == rhs.tiles; }
     operator bool() const;
     Suits get_suit() const { return static_cast<Suits>(tiles[0].index / 9); }
   };

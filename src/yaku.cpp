@@ -434,7 +434,7 @@ namespace score_calculator::internal {
 
       for (const auto& tile : config.dora_indicators) {
         cnt += hand.tiles[dora_tiles3[tile.index].index];
-        if (tile == z3) cnt += config.num_nukidora;
+        if (tile.index == z3.index) cnt += config.num_nukidora;
       }
     }
     else {
@@ -455,7 +455,7 @@ namespace score_calculator::internal {
     if (config.three_player) {
       for (const auto& tile : config.ura_dora_indicators) {
         cnt += hand.tiles[dora_tiles3[tile.index].index];
-        if (tile == z3) cnt += config.num_nukidora;
+        if (tile.index == z3.index) cnt += config.num_nukidora;
       }
     }
     else {

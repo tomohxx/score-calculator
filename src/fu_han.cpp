@@ -214,19 +214,19 @@ namespace score_calculator {
 
     bool is_open_wait(const Blocks& blocks, const Tile& tile)
     {
-      return tile < east && ((tile.index % 9 < 6 && blocks[tile.index].num_closed_sequence) ||
-                             (tile.index % 9 > 2 && blocks[tile.index - 2].num_closed_sequence));
+      return tile.index < east.index && ((tile.index % 9 < 6 && blocks[tile.index].num_closed_sequence) ||
+                                         (tile.index % 9 > 2 && blocks[tile.index - 2].num_closed_sequence));
     }
 
     bool is_edge_wait(const Blocks& blocks, const Tile& tile)
     {
-      return tile < east && ((tile.index % 9 == 6 && blocks[tile.index].num_closed_sequence) ||
-                             (tile.index % 9 == 2 && blocks[tile.index - 2].num_closed_sequence));
+      return tile.index < east.index && ((tile.index % 9 == 6 && blocks[tile.index].num_closed_sequence) ||
+                                         (tile.index % 9 == 2 && blocks[tile.index - 2].num_closed_sequence));
     }
 
     bool is_closed_wait(const Blocks& blocks, const Tile& tile)
     {
-      return tile < east && tile.index % 9 >= 1 && tile.index % 9 <= 7 && blocks[tile.index - 1].num_closed_sequence;
+      return tile.index < east.index && tile.index % 9 >= 1 && tile.index % 9 <= 7 && blocks[tile.index - 1].num_closed_sequence;
     }
 
     bool is_pair_wait(const Blocks& blocks, const Tile& tile)

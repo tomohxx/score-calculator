@@ -14,11 +14,7 @@ namespace score_calculator {
     constexpr Tile(const int index, const bool is_red) : index(index), is_red(is_red) {}
     constexpr Tile(const std::pair<int, bool>& tile) : index(tile.first), is_red(tile.second) {}
 
-    bool operator==(const Tile& tile) const { return index == tile.index; }
-    bool operator<(const Tile& tile) const { return index < tile.index; }
-    bool operator>(const Tile& tile) const { return index > tile.index; }
-    bool operator<=(const Tile& tile) const { return index <= tile.index; }
-    bool operator>=(const Tile& tile) const { return index >= tile.index; }
+    bool operator==(const Tile& tile) const { return index == tile.index && is_red == tile.is_red; }
 
     explicit constexpr operator int() const { return index; }
 
