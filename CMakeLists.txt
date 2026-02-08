@@ -6,7 +6,6 @@ find_package(GTest REQUIRED)
 
 set(SCORE_CALCULATOR_SOURCES
   src/fu_han.cpp
-  src/hand.cpp
   src/meld.cpp
   src/parser.cpp
   src/winning_hand.cpp
