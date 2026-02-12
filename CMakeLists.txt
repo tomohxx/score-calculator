@@ -8,6 +8,7 @@ set(SCORE_CALCULATOR_SOURCES
   src/fu_han.cpp
   src/meld.cpp
   src/parser.cpp
+  src/score.cpp
   src/winning_hand.cpp
   src/yaku.cpp)
 
@@ -19,7 +20,6 @@ set(SCORE_CALCULATOR_HEADERS
   src/meld.hpp
   src/parser.hpp
   src/result.hpp
-  src/score.cpp
   src/score.hpp
   src/tile.hpp
   src/types.hpp
