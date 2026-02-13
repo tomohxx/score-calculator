@@ -31,7 +31,7 @@ add_library(score_calculator
   ${SCORE_CALCULATOR_HEADERS})
 target_compile_features(score_calculator PUBLIC cxx_std_23)
 target_compile_options(score_calculator PUBLIC
-  $<$<CONFIG:DEBUG>:-O0 -Wall -Wextra -g>
+  $<$<CONFIG:Debug>:-O0 -Wall -Wextra -g>
   $<$<CONFIG:Release>:-O3 -Wall -Wextra>)
 target_include_directories(score_calculator PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
