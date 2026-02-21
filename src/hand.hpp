@@ -1,11 +1,12 @@
 #ifndef SCORE_CALCULATOR_HAND_HPP
 #define SCORE_CALCULATOR_HAND_HPP
 
+#include "meld.hpp"
 #include "tile.hpp"
 #include "types.hpp"
 #include <algorithm>
-#include <array>
 #include <cassert>
+#include <numeric>
 #include <utility>
 
 namespace score_calculator {
@@ -53,6 +54,67 @@ namespace score_calculator {
 
       return std::forward<decltype(self)>(self);
     }
+
+    auto draw(this auto&& self, const Tile& tile, const std::size_t n) -> decltype(auto)
+    {
+      for (std::size_t i = 0u; i < n; ++i) {
+        self.draw(tile);
+      }
+
+      return std::forward<decltype(self)>(self);
+    }
+
+    auto discard(this auto&& self, const Tile& tile, const std::size_t n) -> decltype(auto)
+    {
+      for (std::size_t i = 0u; i < n; ++i) {
+        self.discard(tile);
+      }
+
+      return std::forward<decltype(self)>(self);
+    }
+
+    auto draw(this auto&& self, const Hand& hand) -> decltype(auto)
+    {
+      for (int tid = 0; tid < NUM_TIDS; ++tid) {
+        self.tiles[tid] += hand.tiles[tid];
+        self.red_dora[tid] += hand.red_dora[tid];
+      }
+
+      return std::forward<decltype(self)>(self);
+    }
+
+    auto discard(this auto&& self, const Hand& hand) -> decltype(auto)
+    {
+      for (int tid = 0; tid < NUM_TIDS; ++tid) {
+        self.tiles[tid] -= hand.tiles[tid];
+        self.red_dora[tid] -= hand.red_dora[tid];
+      }
+
+      return std::forward<decltype(self)>(self);
+    }
+
+    auto draw(this auto&& self, const Melds& melds) -> decltype(auto)
+    {
+      for (const auto& meld : melds) {
+        self.draw(meld.get_tiles());
+      }
+
+      return std::forward<decltype(self)>(self);
+    }
+
+    auto discard(this auto&& self, const Melds& melds) -> decltype(auto)
+    {
+      for (const auto& meld : melds) {
+        self.discard(meld.get_tiles());
+      }
+
+      return std::forward<decltype(self)>(self);
+    }
+
+    bool has_tile(const int index) const { return tiles[index] > red_dora[index]; }
+    bool has_red_dora(const int index) const { return red_dora[index] > 0; }
+    bool has_tile(const Tile& tile) const { return tile.is_red ? has_red_dora(tile.index) : has_tile(tile.index); }
+    int calc_sum() const { return std::accumulate(tiles.begin(), tiles.end(), 0); }
 
     explicit Hand(const Tiles& tiles) { draw(tiles); }
   };
