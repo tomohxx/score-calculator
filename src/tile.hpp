@@ -1,6 +1,7 @@
 #ifndef SCORE_CALCULATOR_TILE_HPP
 #define SCORE_CALCULATOR_TILE_HPP
 
+#include <functional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -117,6 +118,16 @@ namespace score_calculator {
       return {static_cast<int>(index) - 1 + 18, true};
     }
   }
+}
+
+namespace std {
+  template <>
+  struct hash<score_calculator::Tile> {
+    std::size_t operator()(const score_calculator::Tile& tile) const noexcept
+    {
+      return std::hash<int>()(tile.index) ^ std::hash<bool>()(tile.is_red);
+    }
+  };
 }
 
 #endif
