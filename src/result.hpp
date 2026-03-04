@@ -11,6 +11,11 @@ namespace score_calculator {
     int num_yakuman = 0;
     std::unordered_map<YakuId, int> reasons_yaku;
     std::unordered_map<YakuId, int> reasons_yakuman;
+    bool is_open_wait = false;   // リャンメン待ち
+    bool is_edge_wait = false;   // ペンチャン待ち
+    bool is_closed_wait = false; // カンチャン待ち
+    bool is_pair_wait = false;   // タンキ待ち
+    bool is_dual_wait = false;   // シャンポン待ち
 
     void update_yaku(const YakuId yaku_id, const int num_han)
     {

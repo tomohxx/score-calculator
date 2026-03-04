@@ -11,6 +11,12 @@ namespace score_calculator {
   namespace internal {
     void validate(Hand& hand, const Melds& melds, const Tile& winning_tile, const Config& config);
 
+    bool is_open_wait(const Blocks& blocks, const Tile& tile);
+    bool is_edge_wait(const Blocks& blocks, const Tile& tile);
+    bool is_closed_wait(const Blocks& blocks, const Tile& tile);
+    bool is_pair_wait(const Blocks& blocks, const Tile& tile);
+    bool is_dual_wait(const Blocks& blocks, const Tile& tile);
+
     namespace standard {
       Result calc_fu_han(const Blocks& closed_blocks,
                          const Blocks& open_blocks,
@@ -176,6 +182,12 @@ namespace score_calculator {
         *reinterpret_cast<unsigned int*>(&all_blocks[tid]) |= *reinterpret_cast<const unsigned int*>(&open_blocks[tid]);
       }
 
+      result.is_open_wait = is_open_wait(all_blocks, winning_tile);
+      result.is_edge_wait = is_edge_wait(all_blocks, winning_tile);
+      result.is_closed_wait = is_closed_wait(all_blocks, winning_tile);
+      result.is_pair_wait = is_pair_wait(all_blocks, winning_tile);
+      result.is_dual_wait = is_dual_wait(all_blocks, winning_tile);
+
       const auto [num_fu, is_pinfu] = calc_fu(all_blocks, winning_tile, config, is_open);
 
       result.num_fu = num_fu;
@@ -312,6 +324,7 @@ namespace score_calculator {
       Result result;
 
       result.num_fu = NUM_FU_SEVEN_PAIRS;
+      result.is_pair_wait = true;
       calc_yaku(result, hand, winning_tile, config);
 
       return result;
