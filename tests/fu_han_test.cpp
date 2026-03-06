@@ -218,3 +218,143 @@ TEST(FuHan, TestHoniisouKuisagari)
   EXPECT_EQ(result.num_han, 3);
   EXPECT_EQ(result.reasons_yaku.at(YakuId::HONIISOU), 2);
 }
+
+// リャンメン待ち
+TEST(FuHan, TestOpenWait)
+{
+  Hand hand{{m1, m2, m3, m4, m5, m6, p1, p2, p3, s1, s2, s3, z1, z1}};
+
+  Config config{
+      .seat_wind = WindType::SOUTH,
+      .round_wind = WindType::EAST,
+      .is_tsumo = false,
+  };
+
+  const auto result = calc_fu_han(hand, {}, m1, config);
+
+  EXPECT_TRUE(result.is_open_wait);
+  EXPECT_FALSE(result.is_edge_wait);
+  EXPECT_FALSE(result.is_closed_wait);
+  EXPECT_FALSE(result.is_pair_wait);
+  EXPECT_FALSE(result.is_dual_wait);
+}
+
+// ペンチャン待ち
+TEST(FuHan, TestEdgeWait)
+{
+  Hand hand{{m1, m2, m3, p1, p2, p3, p4, p5, p6, s1, s2, s3, z1, z1}};
+
+  Config config{
+      .seat_wind = WindType::SOUTH,
+      .round_wind = WindType::EAST,
+      .is_tsumo = false,
+  };
+
+  const auto result = calc_fu_han(hand, {}, m3, config);
+
+  EXPECT_FALSE(result.is_open_wait);
+  EXPECT_TRUE(result.is_edge_wait);
+  EXPECT_FALSE(result.is_closed_wait);
+  EXPECT_FALSE(result.is_pair_wait);
+  EXPECT_FALSE(result.is_dual_wait);
+}
+
+// カンチャン待ち
+TEST(FuHan, TestClosedWait)
+{
+  Hand hand{{m1, m2, m3, m4, m5, m6, p1, p2, p3, s1, s2, s3, z1, z1}};
+
+  Config config{
+      .seat_wind = WindType::SOUTH,
+      .round_wind = WindType::EAST,
+      .is_tsumo = false,
+  };
+
+  const auto result = calc_fu_han(hand, {}, m2, config);
+
+  EXPECT_FALSE(result.is_open_wait);
+  EXPECT_FALSE(result.is_edge_wait);
+  EXPECT_TRUE(result.is_closed_wait);
+  EXPECT_FALSE(result.is_pair_wait);
+  EXPECT_FALSE(result.is_dual_wait);
+}
+
+// タンキ待ち
+TEST(FuHan, TestPairWait)
+{
+  Hand hand{{m1, m2, m3, m4, m5, m6, p1, p2, p3, s1, s2, s3, z1, z1}};
+
+  Config config{
+      .seat_wind = WindType::SOUTH,
+      .round_wind = WindType::EAST,
+      .is_tsumo = false,
+  };
+
+  const auto result = calc_fu_han(hand, {}, z1, config);
+
+  EXPECT_FALSE(result.is_open_wait);
+  EXPECT_FALSE(result.is_edge_wait);
+  EXPECT_FALSE(result.is_closed_wait);
+  EXPECT_TRUE(result.is_pair_wait);
+  EXPECT_FALSE(result.is_dual_wait);
+}
+
+// シャンポン待ち
+TEST(FuHan, TestDualWait)
+{
+  Hand hand{{m1, m2, m3, m4, m5, m6, p1, p2, p3, z1, z1, z1, z2, z2}};
+
+  Config config{
+      .seat_wind = WindType::SOUTH,
+      .round_wind = WindType::EAST,
+      .is_tsumo = false,
+  };
+
+  const auto result = calc_fu_han(hand, {}, z1, config);
+
+  EXPECT_FALSE(result.is_open_wait);
+  EXPECT_FALSE(result.is_edge_wait);
+  EXPECT_FALSE(result.is_closed_wait);
+  EXPECT_FALSE(result.is_pair_wait);
+  EXPECT_TRUE(result.is_dual_wait);
+}
+
+// 七対子の単騎待ち
+TEST(FuHan, TestChiitoitsuPairWait)
+{
+  Hand hand{{m1, m1, m3, m3, m5, m5, m7, m7, m9, m9, p1, p1, p3, p3}};
+
+  Config config{
+      .seat_wind = WindType::SOUTH,
+      .round_wind = WindType::EAST,
+      .is_tsumo = false,
+  };
+
+  const auto result = calc_fu_han(hand, {}, m1, config);
+
+  EXPECT_FALSE(result.is_open_wait);
+  EXPECT_FALSE(result.is_edge_wait);
+  EXPECT_FALSE(result.is_closed_wait);
+  EXPECT_TRUE(result.is_pair_wait);
+  EXPECT_FALSE(result.is_dual_wait);
+}
+
+// 複数の待ち型が同時に成立する場合(両面待ちかつペンチャン待ち)
+TEST(FuHan, TestMultipleWaitTypes)
+{
+  Hand hand{{m1, m2, m3, m3, m4, m5, p1, p2, p3, s1, s2, s3, z1, z1}};
+
+  Config config{
+      .seat_wind = WindType::SOUTH,
+      .round_wind = WindType::EAST,
+      .is_tsumo = false,
+  };
+
+  const auto result = calc_fu_han(hand, {}, m3, config);
+
+  EXPECT_TRUE(result.is_open_wait);
+  EXPECT_TRUE(result.is_edge_wait);
+  EXPECT_FALSE(result.is_closed_wait);
+  EXPECT_FALSE(result.is_pair_wait);
+  EXPECT_FALSE(result.is_dual_wait);
+}
