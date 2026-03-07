@@ -1,6 +1,5 @@
 #include <gtest/gtest.h>
-#include <mahjong/score_calculator/core.hpp>
-#include <mahjong/score_calculator/score.hpp>
+#include <mahjong/score_calculator.hpp>
 using namespace mahjong::score_calculator;
 
 // 不正な和了牌

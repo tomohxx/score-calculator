@@ -25,7 +25,7 @@ make install
 
 ```cpp
 #include <cassert>
-#include <mahjong/score_calculator/core.hpp>
+#include <mahjong/score_calculator.hpp>
 using namespace mahjong::score_calculator;
 
 int main()
@@ -59,7 +59,7 @@ int main()
 
 ```cpp
 #include <cassert>
-#include <mahjong/score_calculator/core.hpp>
+#include <mahjong/score_calculator.hpp>
 using namespace mahjong::score_calculator;
 
 int main()
@@ -97,7 +97,7 @@ int main()
 
 ```cpp
 #include <cassert>
-#include <mahjong/score_calculator/core.hpp>
+#include <mahjong/score_calculator.hpp>
 using namespace mahjong::score_calculator;
 
 int main()
@@ -129,7 +129,7 @@ int main()
 
 ```cpp
 #include <cassert>
-#include <mahjong/score_calculator/core.hpp>
+#include <mahjong/score_calculator.hpp>
 using namespace mahjong::score_calculator;
 
 int main()
@@ -188,7 +188,7 @@ Following expressions also avaliable.
 
 ```cpp
 #include <cassert>
-#include <mahjong/score_calculator/core.hpp>
+#include <mahjong/score_calculator.hpp>
 using namespace mahjong::score_calculator;
 using namespace mahjong::score_calculator::literals;
 
@@ -232,7 +232,7 @@ int main()
 
 ```cpp
 #include <cassert>
-#include <mahjong/score_calculator/core.hpp>
+#include <mahjong/score_calculator.hpp>
 using namespace mahjong::score_calculator;
 
 int main()

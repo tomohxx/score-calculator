@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <mahjong/score_calculator/parser.hpp>
+#include <mahjong/score_calculator.hpp>
 using namespace mahjong::score_calculator;
 
 TEST(Parser, TestFromMPSZ1)

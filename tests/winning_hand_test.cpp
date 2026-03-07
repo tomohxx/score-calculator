@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <mahjong/score_calculator/hand.hpp>
+#include <mahjong/score_calculator.hpp>
 #include <mahjong/score_calculator/winning_hand.hpp>
 using namespace mahjong::score_calculator;
 using internal::Blocks;
