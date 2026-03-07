@@ -1,7 +1,7 @@
-#include "hand.hpp"
-#include "winning_hand.hpp"
 #include <gtest/gtest.h>
-using namespace score_calculator;
+#include <mahjong/score_calculator/hand.hpp>
+#include <mahjong/score_calculator/winning_hand.hpp>
+using namespace mahjong::score_calculator;
 using internal::Blocks;
 
 // 3N和了判定

@@ -1,7 +1,7 @@
-#include "meld.hpp"
+#include <mahjong/score_calculator/meld.hpp>
 #include <stdexcept>
 
-namespace score_calculator {
+namespace mahjong::score_calculator {
   bool is_pon(const Tiles& tiles)
   {
     return tiles.size() == 3u &&

@@ -1,11 +1,11 @@
-#ifndef SCORE_CALCULATOR_SCORE_HPP
-#define SCORE_CALCULATOR_SCORE_HPP
+#ifndef MAHJONG_SCORE_CALCULATOR_SCORE_HPP
+#define MAHJONG_SCORE_CALCULATOR_SCORE_HPP
 
-#include "config.hpp"
-#include "result.hpp"
+#include <mahjong/score_calculator/config.hpp>
+#include <mahjong/score_calculator/result.hpp>
 #include <memory>
 
-namespace score_calculator {
+namespace mahjong::score_calculator {
   // 点数の支払い
   struct Payment {
     // 和了者が受け取る点数を計算する

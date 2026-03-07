@@ -1,15 +1,15 @@
-#ifndef SCORE_CALCULATOR_HAND_HPP
-#define SCORE_CALCULATOR_HAND_HPP
+#ifndef MAHJONG_SCORE_CALCULATOR_HAND_HPP
+#define MAHJONG_SCORE_CALCULATOR_HAND_HPP
 
-#include "meld.hpp"
-#include "tile.hpp"
-#include "types.hpp"
 #include <algorithm>
 #include <cassert>
+#include <mahjong/score_calculator/meld.hpp>
+#include <mahjong/score_calculator/tile.hpp>
+#include <mahjong/score_calculator/types.hpp>
 #include <numeric>
 #include <utility>
 
-namespace score_calculator {
+namespace mahjong::score_calculator {
   struct Hand {
     Arr tiles{};
     Arr red_dora{};

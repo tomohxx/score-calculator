@@ -1,13 +1,13 @@
-#include "fu_han.hpp"
-#include "winning_hand.hpp"
-#include "yaku.hpp"
 #include <cassert>
 #include <iostream>
+#include <mahjong/score_calculator/fu_han.hpp>
+#include <mahjong/score_calculator/winning_hand.hpp>
+#include <mahjong/score_calculator/yaku.hpp>
 #include <numeric>
 #include <stdexcept>
 #include <utility>
 
-namespace score_calculator {
+namespace mahjong::score_calculator {
   namespace internal {
     void validate(Hand& hand, const Melds& melds, const Tile& winning_tile, const Config& config);
 

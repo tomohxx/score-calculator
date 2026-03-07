@@ -1,6 +1,6 @@
-#include "core.hpp"
 #include <gtest/gtest.h>
-using namespace score_calculator;
+#include <mahjong/score_calculator/core.hpp>
+using namespace mahjong::score_calculator;
 
 struct TestRonParam {
   int num_hu;

@@ -1,9 +1,9 @@
-#ifndef SCORE_CALCULATOR_TYPES_HPP
-#define SCORE_CALCULATOR_TYPES_HPP
+#ifndef MAHJONG_SCORE_CALCULATOR_TYPES_HPP
+#define MAHJONG_SCORE_CALCULATOR_TYPES_HPP
 
 #include <array>
 
-namespace score_calculator {
+namespace mahjong::score_calculator {
   constexpr int NUM_TIDS = 34;
 
   using Arr = std::array<int, NUM_TIDS>;

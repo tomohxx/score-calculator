@@ -1,10 +1,10 @@
-#include "parser.hpp"
 #include <cassert>
+#include <mahjong/score_calculator/parser.hpp>
 #include <regex>
 #include <span>
 #include <stdexcept>
 
-namespace score_calculator {
+namespace mahjong::score_calculator {
   Tiles from_mpsz(const std::string& str_mpsz)
   {
     Tiles tiles;

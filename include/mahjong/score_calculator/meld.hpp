@@ -1,12 +1,12 @@
-#ifndef SCORE_CALCULATOR_MELD_HPP
-#define SCORE_CALCULATOR_MELD_HPP
+#ifndef MAHJONG_SCORE_CALCULATOR_MELD_HPP
+#define MAHJONG_SCORE_CALCULATOR_MELD_HPP
 
-#include "tile.hpp"
-#include "types.hpp"
 #include <algorithm>
+#include <mahjong/score_calculator/tile.hpp>
+#include <mahjong/score_calculator/types.hpp>
 #include <vector>
 
-namespace score_calculator {
+namespace mahjong::score_calculator {
   class Meld {
   private:
     MeldType meld_type;

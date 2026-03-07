@@ -1,12 +1,12 @@
-#ifndef SCORE_CALCULATOR_TILE_HPP
-#define SCORE_CALCULATOR_TILE_HPP
+#ifndef MAHJONG_SCORE_CALCULATOR_TILE_HPP
+#define MAHJONG_SCORE_CALCULATOR_TILE_HPP
 
 #include <functional>
 #include <string>
 #include <utility>
 #include <vector>
 
-namespace score_calculator {
+namespace mahjong::score_calculator {
   class Tile {
   private:
     static constexpr std::string suffix = "mpsz";
@@ -122,8 +122,8 @@ namespace score_calculator {
 
 namespace std {
   template <>
-  struct hash<score_calculator::Tile> {
-    std::size_t operator()(const score_calculator::Tile& tile) const noexcept
+  struct hash<mahjong::score_calculator::Tile> {
+    std::size_t operator()(const mahjong::score_calculator::Tile& tile) const noexcept
     {
       return std::hash<int>()(tile.index) ^ std::hash<bool>()(tile.is_red);
     }

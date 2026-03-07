@@ -1,8 +1,8 @@
 // https://ja.wikipedia.org/wiki/%E9%BA%BB%E9%9B%80%E3%81%AE%E5%BE%97%E7%82%B9%E8%A8%88%E7%AE%97
-#include "score.hpp"
+#include <mahjong/score_calculator/score.hpp>
 #include <stdexcept>
 
-namespace score_calculator {
+namespace mahjong::score_calculator {
   constexpr int MAX_HAN_MANGAN = 5;
   constexpr int MAX_HAN_HANEMAN = 7;
   constexpr int MAX_HAN_BAIMAN = 10;
