@@ -80,7 +80,7 @@ namespace mahjong::score_calculator {
     MANZU, // 萬子
     PINZU, // 筒子
     SOUZU, // 索子
-    ZIHAI, // 字牌
+    JIHAI, // 字牌
   };
 
   // 役ID

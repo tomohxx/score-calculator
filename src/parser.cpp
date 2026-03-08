@@ -99,7 +99,7 @@ namespace mahjong::score_calculator {
       case Suits::MANZU: str_mpsz += 'm'; break;
       case Suits::PINZU: str_mpsz += 'p'; break;
       case Suits::SOUZU: str_mpsz += 's'; break;
-      case Suits::ZIHAI: str_mpsz += 'z'; break;
+      case Suits::JIHAI: str_mpsz += 'z'; break;
       default: std::unreachable();
       }
 
