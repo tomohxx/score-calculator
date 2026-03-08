@@ -12,7 +12,7 @@ namespace mahjong::score_calculator {
                      const Melds& melds,
                      const Tile& winning_tile,
                      const Config& config,
-                     int mode = 0,
+                     unsigned int mode = 0u,
                      bool check = false);
 }
 

@@ -42,7 +42,7 @@ namespace mahjong::score_calculator {
                      const Melds& melds,
                      const Tile& winning_tile,
                      const Config& config,
-                     const int mode,
+                     const unsigned int mode,
                      const bool check)
   {
     if (check) {
@@ -85,15 +85,15 @@ namespace mahjong::score_calculator {
       }
     }
 
-    if (mode & 1) {
+    if (mode & 1u) {
       return internal::standard::calc_fu_han(hand, open_blocks, whole_hand, winning_tile, config, is_open).second;
     }
-    else if (mode & 2) {
+    else if (mode & 2u) {
       if (internal::seven_pairs::is_winning_hand(hand.tiles)) {
         return internal::seven_pairs::calc_fu_han(hand, winning_tile, config);
       }
     }
-    else if (mode & 4) {
+    else if (mode & 4u) {
       if (internal::thirteen_orphans::is_winning_hand(hand.tiles)) {
         return internal::thirteen_orphans::calc_fu_han(hand, winning_tile, config);
       }
