@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <mahjong/score_calculator/tile.hpp>
 #include <mahjong/score_calculator/types.hpp>
+#include <string>
 #include <vector>
 
 namespace mahjong::score_calculator {
@@ -24,6 +25,16 @@ namespace mahjong::score_calculator {
 
     operator bool() const;
     Suits get_suit() const { return static_cast<Suits>(tiles[0].index / 9); }
+
+    operator std::string() const
+    {
+      std::string s;
+
+      for (const auto& tile : tiles) s += (tile.is_red ? "r" : "") + std::to_string(tile.index % 9 + 1);
+      s += suffix[static_cast<int>(get_suit())];
+
+      return meld_type == MeldType::ANKAN ? ("[[" + s + "]]") : ("[" + s + "]");
+    }
   };
 
   using Melds = std::vector<Meld>;

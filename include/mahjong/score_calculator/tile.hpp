@@ -2,16 +2,13 @@
 #define MAHJONG_SCORE_CALCULATOR_TILE_HPP
 
 #include <functional>
+#include <mahjong/score_calculator/types.hpp>
 #include <string>
 #include <utility>
 #include <vector>
 
 namespace mahjong::score_calculator {
-  class Tile {
-  private:
-    static constexpr std::string suffix = "mpsz";
-
-  public:
+  struct Tile {
     int index{};
     bool is_red{};
 

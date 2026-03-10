@@ -248,7 +248,7 @@ int main()
       {MeldType::ANKAN, {z1, z1, z1, z1}},
   };
 
-  from_mpsz("99p[123m][999m][1111p][[1111z]]", hand1, melds1);
+  parser::regular::from_mpsz("99p[123m][999m][1111p][[1111z]]", hand1, melds1);
 
   assert(hand1 == hand2);
   assert(melds1 == melds2);
