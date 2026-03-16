@@ -42,7 +42,7 @@ namespace mahjong::score_calculator {
   // 点数の支払いを生成するファクトリ関数
   std::unique_ptr<Payment> calc_payment(const Result& result, const Config& config);
 
-  namespace internal {
+  namespace detail {
     std::unique_ptr<TsumoPayment> calc_payment_tsumo(const int basic_score, bool is_dealer);
     std::unique_ptr<RonPayment> calc_payment_ron(const int basic_score, bool is_dealer);
   }

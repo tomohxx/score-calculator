@@ -6,7 +6,7 @@
 #include <mahjong/score_calculator/result.hpp>
 #include <mahjong/score_calculator/types.hpp>
 
-namespace mahjong::score_calculator::internal {
+namespace mahjong::score_calculator::detail {
   namespace standard {
     void calc_yaku(Result& result, const Blocks& blocks, const Hand& hand, const Tile& winning_tile, const Config& config, bool is_open);
   }

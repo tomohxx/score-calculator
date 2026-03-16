@@ -39,7 +39,7 @@ namespace mahjong::score_calculator {
 
   using Melds = std::vector<Meld>;
 
-  namespace internal {
+  namespace detail {
     Meld make_pon_chi_minkan(const Tiles& tiles);
     Meld make_ankan(const Tiles& tiles);
   }

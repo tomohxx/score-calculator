@@ -3,7 +3,7 @@
 #include <mahjong/score_calculator/winning_hand.hpp>
 #include <numeric>
 
-namespace mahjong::score_calculator::internal {
+namespace mahjong::score_calculator::detail {
   void standard::find_winning_hand(Arr& tiles, Blocks& blocks, std::function<void()> on_success)
   {
     int pos_pair = -1;

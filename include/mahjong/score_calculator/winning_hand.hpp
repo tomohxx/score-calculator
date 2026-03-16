@@ -5,7 +5,7 @@
 #include <mahjong/score_calculator/types.hpp>
 #include <span>
 
-namespace mahjong::score_calculator::internal {
+namespace mahjong::score_calculator::detail {
   namespace standard {
     namespace detail {
       bool is_winning_hand(std::span<int> tiles, std::span<Block> blocks);

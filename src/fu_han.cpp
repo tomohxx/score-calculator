@@ -8,7 +8,7 @@
 #include <utility>
 
 namespace mahjong::score_calculator {
-  namespace internal {
+  namespace detail {
     void validate(Hand& hand, const Melds& melds, const Tile& winning_tile, const Config& config);
 
     namespace standard {
@@ -36,7 +36,7 @@ namespace mahjong::score_calculator {
     }
   }
 
-  using namespace internal;
+  using namespace detail;
 
   Result calc_fu_han(Hand& hand,
                      const Melds& melds,
@@ -86,27 +86,27 @@ namespace mahjong::score_calculator {
     }
 
     if (mode & 1u) {
-      return internal::standard::calc_fu_han(hand, open_blocks, whole_hand, winning_tile, config, is_open).second;
+      return detail::standard::calc_fu_han(hand, open_blocks, whole_hand, winning_tile, config, is_open).second;
     }
     else if (mode & 2u) {
-      if (internal::seven_pairs::is_winning_hand(hand.tiles)) {
-        return internal::seven_pairs::calc_fu_han(hand, winning_tile, config);
+      if (detail::seven_pairs::is_winning_hand(hand.tiles)) {
+        return detail::seven_pairs::calc_fu_han(hand, winning_tile, config);
       }
     }
     else if (mode & 4u) {
-      if (internal::thirteen_orphans::is_winning_hand(hand.tiles)) {
-        return internal::thirteen_orphans::calc_fu_han(hand, winning_tile, config);
+      if (detail::thirteen_orphans::is_winning_hand(hand.tiles)) {
+        return detail::thirteen_orphans::calc_fu_han(hand, winning_tile, config);
       }
     }
     else {
-      if (const auto [found, result] = internal::standard::calc_fu_han(hand, open_blocks, whole_hand, winning_tile, config, is_open); found) {
+      if (const auto [found, result] = detail::standard::calc_fu_han(hand, open_blocks, whole_hand, winning_tile, config, is_open); found) {
         return result;
       }
-      else if (internal::seven_pairs::is_winning_hand(hand.tiles)) {
-        return internal::seven_pairs::calc_fu_han(hand, winning_tile, config);
+      else if (detail::seven_pairs::is_winning_hand(hand.tiles)) {
+        return detail::seven_pairs::calc_fu_han(hand, winning_tile, config);
       }
-      else if (internal::thirteen_orphans::is_winning_hand(hand.tiles)) {
-        return internal::thirteen_orphans::calc_fu_han(hand, winning_tile, config);
+      else if (detail::thirteen_orphans::is_winning_hand(hand.tiles)) {
+        return detail::thirteen_orphans::calc_fu_han(hand, winning_tile, config);
       }
 
       throw std::invalid_argument("Not winnging hand");
@@ -115,7 +115,7 @@ namespace mahjong::score_calculator {
     std::unreachable();
   }
 
-  namespace internal {
+  namespace detail {
     void validate(Hand& hand, const Melds& melds, const Tile& winning_tile, const Config& config)
     {
       // 手牌に和了牌が含まれていなければならない

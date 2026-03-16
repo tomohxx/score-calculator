@@ -9,7 +9,7 @@
 #define UPDATE_SINGLE_YAKUMAN(yaku_id) result.update_yakuman(YakuId::yaku_id, SINGLE_YAKUMAN)
 #define UPDATE_DOUBLE_YAKUMAN(yaku_id, condition) result.update_yakuman(YakuId::yaku_id, ((condition) ? DOUBLE_YAKUMAN : SINGLE_YAKUMAN))
 
-namespace mahjong::score_calculator::internal {
+namespace mahjong::score_calculator::detail {
   constexpr std::array<Tile, 21u> simple_tiles{{m2, m3, m4, m5, m6, m7, m8, // 中張牌
                                                 p2, p3, p4, p5, p6, p7, p8,
                                                 s2, s3, s4, s5, s6, s7, s8}};

@@ -18,7 +18,7 @@ namespace mahjong::score_calculator {
     ANKAN,  // 暗槓
   };
 
-  namespace internal {
+  namespace detail {
     // ブロック
     struct Block {
       unsigned int num_pair : 1 = 0;            // 雀頭の数
@@ -162,7 +162,7 @@ namespace mahjong::score_calculator {
     CHIIHOU = static_cast<int>(YakuId::CHIIHOU),               // 地和
   };
 
-  namespace internal {
+  namespace detail {
     // 1翻役
 
     constexpr int NUM_YAKU_MENZENCHIN_TSUMOHOU = 1; // 面前清自摸和

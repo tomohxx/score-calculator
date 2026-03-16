@@ -52,14 +52,14 @@ namespace mahjong::score_calculator {
     }
 
     if (config.is_tsumo) {
-      return internal::calc_payment_tsumo(basic_score, is_dealer);
+      return detail::calc_payment_tsumo(basic_score, is_dealer);
     }
     else {
-      return internal::calc_payment_ron(basic_score, is_dealer);
+      return detail::calc_payment_ron(basic_score, is_dealer);
     }
   }
 
-  namespace internal {
+  namespace detail {
     std::unique_ptr<TsumoPayment> calc_payment_tsumo(const int basic_score, const bool is_dealer)
     {
       if (is_dealer) {

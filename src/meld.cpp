@@ -34,7 +34,7 @@ namespace mahjong::score_calculator {
            (meld_type == MeldType::ANKAN && is_kan(tiles));
   }
 
-  namespace internal {
+  namespace detail {
     Meld make_pon_chi_minkan(const Tiles& tiles)
     {
       if (is_pon(tiles)) {
