@@ -4,29 +4,45 @@
 #include <span>
 #include <stdexcept>
 
+namespace {
+  using mahjong::score_calculator::Tiles;
+
+  Tiles from_mpsz(const std::string& mpsz)
+  {
+    Tiles tiles;
+    int base = 0;
+
+    for (auto it = mpsz.crbegin(); it != mpsz.crend(); ++it) {
+      if (*it >= '1' && *it <= '9') {
+        tiles.emplace_back(*it - '1' + base, false);
+      }
+      else if (*it == 'r' && !tiles.empty()) {
+        tiles.back().is_red = true;
+      }
+      else if (*it == 'm') base = 0;
+      else if (*it == 'p') base = 9;
+      else if (*it == 's') base = 18;
+      else if (*it == 'z') base = 27;
+    }
+
+    std::reverse(tiles.begin(), tiles.end());
+
+    return tiles;
+  }
+}
+
 namespace mahjong::score_calculator::parser {
   namespace regular {
     Tiles from_mpsz(const std::string& mpsz)
     {
-      Tiles tiles;
-      int base = 0;
+      static const std::regex re("(?:(?:r?[1-9])+[mps]|[1-7]+z)+");
 
-      for (auto it = mpsz.crbegin(); it != mpsz.crend(); ++it) {
-        if (*it >= '1' && *it <= '9') {
-          tiles.emplace_back(*it - '1' + base, false);
-        }
-        else if (*it == 'r' && !tiles.empty()) {
-          tiles.back().is_red = true;
-        }
-        else if (*it == 'm') base = 0;
-        else if (*it == 'p') base = 9;
-        else if (*it == 's') base = 18;
-        else if (*it == 'z') base = 27;
+      if (std::regex_match(mpsz, re)) {
+        return ::from_mpsz(mpsz);
       }
-
-      std::reverse(tiles.begin(), tiles.end());
-
-      return tiles;
+      else {
+        throw std::invalid_argument("Invalid mpsz string");
+      }
     }
 
     void from_mpsz(const std::string& mpsz, Hand& hand, Melds& melds)
@@ -35,17 +51,23 @@ namespace mahjong::score_calculator::parser {
 
       for (std::sregex_iterator it(std::begin(mpsz), std::end(mpsz), re), end; it != end; ++it) {
         const auto s = it->str();
-        const auto tiles = from_mpsz(s);
+        const auto tiles = ::from_mpsz(s);
         // 暗槓
         if (s.starts_with("[[") && s.ends_with("]]")) {
           melds.push_back(internal::make_ankan(tiles));
+        }
+        else if (s.starts_with("[[") || s.ends_with("]]")) {
+          throw std::invalid_argument("Invalid mpsz string");
         }
         // ポン, チー, 明槓
         else if (s.starts_with("[") && s.ends_with("]")) {
           melds.push_back(internal::make_pon_chi_minkan(tiles));
         }
+        else if (s.starts_with("[") || s.ends_with("]")) {
+          throw std::invalid_argument("Invalid mpsz string");
+        }
         // 手牌
-        else if (!s.starts_with("[") && !s.ends_with("]")) {
+        else {
           hand.draw(tiles);
         }
       }
