@@ -122,36 +122,38 @@ namespace mahjong::score_calculator {
     explicit operator std::string() const;
   };
 
-  struct HandView {
-    const Suits suits;
-    std::span<const int> tiles;
-    std::span<const int> red_dora;
+  namespace detail {
+    struct HandView {
+      const Suits suits;
+      std::span<const int> tiles;
+      std::span<const int> red_dora;
 
-    HandView(const Suits suits, const Hand& hand) : suits(suits)
-    {
-      tiles = std::span(hand.tiles).subspan(static_cast<int>(suits) * 9, suits == Suits::JIHAI ? 7 : 9);
-      red_dora = std::span(hand.red_dora).subspan(static_cast<int>(suits) * 9, suits == Suits::JIHAI ? 7 : 9);
-    }
-
-    operator std::string() const
-    {
-      std::string s;
-
-      for (std::size_t tid = 0u; tid < tiles.size(); ++tid) {
-        for (int i = 0; i < red_dora[tid]; ++i) (s += 'r') += tid + '1';
-        for (int i = 0; i < tiles[tid] - red_dora[tid]; ++i) s += tid + '1';
+      HandView(const Suits suits, const Hand& hand) : suits(suits)
+      {
+        tiles = std::span(hand.tiles).subspan(static_cast<int>(suits) * 9, suits == Suits::JIHAI ? 7 : 9);
+        red_dora = std::span(hand.red_dora).subspan(static_cast<int>(suits) * 9, suits == Suits::JIHAI ? 7 : 9);
       }
 
-      return s.empty() ? "" : (s += suffix[static_cast<int>(suits)]);
-    }
-  };
+      operator std::string() const
+      {
+        std::string s;
+
+        for (std::size_t tid = 0u; tid < tiles.size(); ++tid) {
+          for (int i = 0; i < red_dora[tid]; ++i) (s += 'r') += tid + '1';
+          for (int i = 0; i < tiles[tid] - red_dora[tid]; ++i) s += tid + '1';
+        }
+
+        return s.empty() ? s : (s += suffix[static_cast<int>(suits)]);
+      }
+    };
+  }
 
   inline Hand::operator std::string() const
   {
-    return static_cast<std::string>(HandView(Suits::MANZU, *this)) +
-           static_cast<std::string>(HandView(Suits::PINZU, *this)) +
-           static_cast<std::string>(HandView(Suits::SOUZU, *this)) +
-           static_cast<std::string>(HandView(Suits::JIHAI, *this));
+    return static_cast<std::string>(detail::HandView(Suits::MANZU, *this)) +
+           static_cast<std::string>(detail::HandView(Suits::PINZU, *this)) +
+           static_cast<std::string>(detail::HandView(Suits::SOUZU, *this)) +
+           static_cast<std::string>(detail::HandView(Suits::JIHAI, *this));
   }
 }
 
