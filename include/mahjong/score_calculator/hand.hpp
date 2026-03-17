@@ -118,7 +118,7 @@ namespace mahjong::score_calculator {
     bool has_tile(const Tile& tile) const { return tile.is_red ? has_red_dora(tile.index) : has_tile(tile.index); }
     int get_num_tile(const int index) const { return tiles[index] - red_dora[index]; }
     int get_num_red_dora(const int index) const { return red_dora[index]; }
-    int get_tile(const Tile& tile) const { return tile.is_red ? get_num_red_dora(tile.index) : get_num_tile(tile.index); }
+    int get_num_tile(const Tile& tile) const { return tile.is_red ? get_num_red_dora(tile.index) : get_num_tile(tile.index); }
     int calc_sum() const { return std::accumulate(tiles.begin(), tiles.end(), 0); }
 
     explicit Hand(const Tiles& tiles) { draw(tiles); }
