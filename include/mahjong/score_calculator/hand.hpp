@@ -7,7 +7,6 @@
 #include <mahjong/score_calculator/tile.hpp>
 #include <mahjong/score_calculator/types.hpp>
 #include <numeric>
-#include <span>
 #include <string>
 #include <utility>
 
@@ -20,8 +19,9 @@ namespace mahjong::score_calculator {
     Hand(const Arr& tiles, const Arr& red_dora)
         : tiles{tiles}, red_dora{red_dora} {}
     explicit Hand(const std::vector<int>& tiles) { std::copy(tiles.begin(), tiles.end(), this->tiles.begin()); }
-    explicit operator std::vector<int>() { return std::vector<int>(tiles.begin(), tiles.end()); }
+    explicit operator std::vector<int>() const { return std::vector<int>(tiles.begin(), tiles.end()); }
     bool operator==(const Hand& rhs) const { return tiles == rhs.tiles && red_dora == rhs.red_dora; }
+    const std::array<int, NUM_TIDS>& as_array() const { return tiles; }
 
     auto draw(this auto&& self, const Tile& tile) -> decltype(auto)
     {
@@ -116,45 +116,38 @@ namespace mahjong::score_calculator {
     bool has_tile(const int index) const { return tiles[index] > red_dora[index]; }
     bool has_red_dora(const int index) const { return red_dora[index] > 0; }
     bool has_tile(const Tile& tile) const { return tile.is_red ? has_red_dora(tile.index) : has_tile(tile.index); }
+    int get_num_tile(const int index) const { return tiles[index] - red_dora[index]; }
+    int get_num_red_dora(const int index) const { return red_dora[index]; }
+    int get_tile(const Tile& tile) const { return tile.is_red ? get_num_red_dora(tile.index) : get_num_tile(tile.index); }
     int calc_sum() const { return std::accumulate(tiles.begin(), tiles.end(), 0); }
 
     explicit Hand(const Tiles& tiles) { draw(tiles); }
-    explicit operator std::string() const;
-  };
 
-  namespace detail {
-    struct HandView {
-      const Suits suits;
-      std::span<const int> tiles;
-      std::span<const int> red_dora;
+    explicit operator std::string() const
+    {
+      std::string s;
 
-      HandView(const Suits suits, const Hand& hand) : suits(suits)
-      {
-        tiles = std::span(hand.tiles).subspan(static_cast<int>(suits) * 9, suits == Suits::JIHAI ? 7 : 9);
-        red_dora = std::span(hand.red_dora).subspan(static_cast<int>(suits) * 9, suits == Suits::JIHAI ? 7 : 9);
-      }
+      for (int i = 0; i < 4; ++i) {
+        std::string t;
 
-      operator std::string() const
-      {
-        std::string s;
+        for (int j = 0; j < (i == 3 ? 7 : 9); ++j) {
+          for (int k = 0; k < get_num_red_dora(9 * i + j); ++k) {
+            (t += 'r') += j + '1';
+          }
 
-        for (std::size_t tid = 0u; tid < tiles.size(); ++tid) {
-          for (int i = 0; i < red_dora[tid]; ++i) (s += 'r') += tid + '1';
-          for (int i = 0; i < tiles[tid] - red_dora[tid]; ++i) s += tid + '1';
+          for (int k = 0; k < get_num_tile(9 * i + j); ++k) {
+            t += j + '1';
+          }
         }
 
-        return s.empty() ? s : (s += suffix[static_cast<int>(suits)]);
+        if (!t.empty()) {
+          s += t += suffix[i];
+        }
       }
-    };
-  }
 
-  inline Hand::operator std::string() const
-  {
-    return static_cast<std::string>(detail::HandView(Suits::MANZU, *this)) +
-           static_cast<std::string>(detail::HandView(Suits::PINZU, *this)) +
-           static_cast<std::string>(detail::HandView(Suits::SOUZU, *this)) +
-           static_cast<std::string>(detail::HandView(Suits::JIHAI, *this));
-  }
+      return s;
+    }
+  };
 }
 
 #endif
