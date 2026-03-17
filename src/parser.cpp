@@ -1,127 +1,110 @@
-#include "parser.hpp"
 #include <cassert>
+#include <mahjong/score_calculator/parser.hpp>
 #include <regex>
 #include <span>
 #include <stdexcept>
 
-namespace score_calculator {
-  Tiles from_mpsz(const std::string& str_mpsz)
+namespace {
+  using mahjong::score_calculator::Tiles;
+
+  Tiles from_mpsz(const std::string& mpsz)
   {
     Tiles tiles;
-    int offset = 0;
+    int base = 0;
 
-    for (auto it = str_mpsz.crbegin(); it != str_mpsz.crend(); ++it) {
-      if (*it == '0') {
-        tiles.emplace_back(4 + offset, true);
+    for (auto it = mpsz.crbegin(); it != mpsz.crend(); ++it) {
+      if (*it >= '1' && *it <= '9') {
+        tiles.emplace_back(*it - '1' + base, false);
       }
-      else if (*it >= '1' && *it <= '9') {
-        tiles.emplace_back(*it - '1' + offset, false);
+      else if (*it == 'r' && !tiles.empty()) {
+        tiles.back().is_red = true;
       }
-      else if (*it == 'm') offset = 0;
-      else if (*it == 'p') offset = 9;
-      else if (*it == 's') offset = 18;
-      else if (*it == 'z') offset = 27;
+      else if (*it == 'm') base = 0;
+      else if (*it == 'p') base = 9;
+      else if (*it == 's') base = 18;
+      else if (*it == 'z') base = 27;
     }
 
     std::reverse(tiles.begin(), tiles.end());
 
     return tiles;
   }
+}
 
-  void from_mpsz(const std::string& str_mpsz, Hand& hand, Melds& melds)
-  {
-    static const std::regex re("\\[*(?:[0-9]+[mps]|[1-7]+z)+\\]*");
+namespace mahjong::score_calculator::parser {
+  namespace regular {
+    Tiles from_mpsz(const std::string& mpsz)
+    {
+      static const std::regex re("(?:(?:r?[1-9])+[mps]|[1-7]+z)+");
 
-    for (std::sregex_iterator it(std::begin(str_mpsz), std::end(str_mpsz), re), end; it != end; ++it) {
-      const auto str = it->str();
-      const auto tiles = from_mpsz(str);
-      // 暗槓
-      if (str.starts_with("[[") && str.ends_with("]]")) {
-        melds.push_back(internal::make_ankan(tiles));
+      if (std::regex_match(mpsz, re)) {
+        return ::from_mpsz(mpsz);
       }
-      // ポン, チー, 明槓
-      else if (str.starts_with("[") && str.ends_with("]")) {
-        melds.push_back(internal::make_pon_chi_minkan(tiles));
-      }
-      // 手牌
       else {
-        hand.draw(tiles);
+        throw std::invalid_argument("Invalid mpsz string");
       }
+    }
+
+    void from_mpsz(const std::string& mpsz, Hand& hand, Melds& melds)
+    {
+      static const std::regex re("\\[{0,2}(?:(?:r?[1-9])+[mps]|[1-7]+z)+\\]{0,2}");
+
+      for (std::sregex_iterator it(std::begin(mpsz), std::end(mpsz), re), end; it != end; ++it) {
+        const auto s = it->str();
+        const auto tiles = ::from_mpsz(s);
+        // 暗槓
+        if (s.starts_with("[[") && s.ends_with("]]")) {
+          melds.push_back(detail::make_ankan(tiles));
+        }
+        else if (s.starts_with("[[") || s.ends_with("]]")) {
+          throw std::invalid_argument("Invalid mpsz string");
+        }
+        // ポン, チー, 明槓
+        else if (s.starts_with("[") && s.ends_with("]")) {
+          melds.push_back(detail::make_pon_chi_minkan(tiles));
+        }
+        else if (s.starts_with("[") || s.ends_with("]")) {
+          throw std::invalid_argument("Invalid mpsz string");
+        }
+        // 手牌
+        else {
+          hand.draw(tiles);
+        }
+      }
+    }
+
+    std::string to_mpsz(const Hand& hand, const Melds& melds)
+    {
+      std::string s = static_cast<std::string>(hand);
+
+      for (const auto& meld : melds) {
+        s += static_cast<std::string>(meld);
+      }
+
+      return s;
     }
   }
 
-  namespace internal {
-    std::string to_mpsz(const std::span<const int>& tiles,
-                        const std::span<const int>& red_dora,
-                        const char delimiter)
+  namespace tenhou {
+    Tiles from_mpsz(const std::string& mpsz)
     {
-      assert(tiles.size() == red_dora.size());
+      const auto tmp = std::regex_replace(mpsz, std::regex("0"), "r5");
 
-      std::string str_mpsz;
-
-      for (std::size_t i = 0u; i < tiles.size(); ++i) {
-        for (int j = 0; j < red_dora[i]; ++j) {
-          str_mpsz += '0';
-        }
-
-        for (int j = 0; j < tiles[i] - red_dora[i]; ++j) {
-          str_mpsz += i + '1';
-        }
-      }
-
-      if (str_mpsz.empty()) return {};
-      else return str_mpsz += delimiter;
+      return regular::from_mpsz(tmp);
     }
 
-    std::string to_mpsz(const Hand& hand)
+    void from_mpsz(const std::string& mpsz, Hand& hand, Melds& melds)
     {
-      std::string str_mpsz;
+      const auto tmp = std::regex_replace(mpsz, std::regex("0"), "r5");
 
-      str_mpsz += to_mpsz(std::span(hand.tiles).subspan(0, 9), std::span(hand.red_dora).subspan(0, 9), 'm');
-      str_mpsz += to_mpsz(std::span(hand.tiles).subspan(9, 9), std::span(hand.red_dora).subspan(9, 9), 'p');
-      str_mpsz += to_mpsz(std::span(hand.tiles).subspan(18, 9), std::span(hand.red_dora).subspan(18, 9), 's');
-      str_mpsz += to_mpsz(std::span(hand.tiles).subspan(27, 7), std::span(hand.red_dora).subspan(27, 7), 'z');
-
-      return str_mpsz;
+      return regular::from_mpsz(tmp, hand, melds);
     }
 
-    std::string to_mpsz(const Meld& meld)
+    std::string to_mpsz(const Hand& hand, const Melds& melds)
     {
-      assert(meld);
+      const auto tmp = regular::to_mpsz(hand, melds);
 
-      std::string str_mpsz;
-
-      for (const auto& tile : meld.get_tiles()) {
-        str_mpsz += tile.index % 9 + '1';
-      }
-
-      switch (meld.get_suit()) {
-      case Suits::MANZU: str_mpsz += 'm'; break;
-      case Suits::PINZU: str_mpsz += 'p'; break;
-      case Suits::SOUZU: str_mpsz += 's'; break;
-      case Suits::ZIHAI: str_mpsz += 'z'; break;
-      default: std::unreachable();
-      }
-
-      if (meld.get_meld_type() == MeldType::ANKAN) {
-        str_mpsz = "[[" + str_mpsz + "]]";
-      }
-      else {
-        str_mpsz = "[" + str_mpsz + "]";
-      }
-
-      return str_mpsz;
+      return std::regex_replace(tmp, std::regex("r5"), "0");
     }
-  }
-
-  std::string to_mpsz(const Hand& hand, const Melds& melds)
-  {
-    std::string str_mpsz = internal::to_mpsz(hand);
-
-    for (const auto& meld : melds) {
-      str_mpsz += internal::to_mpsz(meld);
-    }
-
-    return str_mpsz;
   }
 }

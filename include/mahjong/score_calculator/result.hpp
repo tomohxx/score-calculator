@@ -1,10 +1,10 @@
 #ifndef SCORE_CALCURATOR_RESULT_HPP
 #define SCORE_CALCURATOR_RESULT_HPP
 
-#include "types.hpp"
+#include <mahjong/score_calculator/types.hpp>
 #include <unordered_map>
 
-namespace score_calculator {
+namespace mahjong::score_calculator {
   struct Result {
     int num_fu = 0;
     int num_han = 0;

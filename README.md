@@ -25,8 +25,8 @@ make install
 
 ```cpp
 #include <cassert>
-#include <score_calculator/core.hpp>
-using namespace score_calculator;
+#include <mahjong/score_calculator.hpp>
+using namespace mahjong::score_calculator;
 
 int main()
 {
@@ -59,8 +59,8 @@ int main()
 
 ```cpp
 #include <cassert>
-#include <score_calculator/core.hpp>
-using namespace score_calculator;
+#include <mahjong/score_calculator.hpp>
+using namespace mahjong::score_calculator;
 
 int main()
 {
@@ -97,8 +97,8 @@ int main()
 
 ```cpp
 #include <cassert>
-#include <score_calculator/core.hpp>
-using namespace score_calculator;
+#include <mahjong/score_calculator.hpp>
+using namespace mahjong::score_calculator;
 
 int main()
 {
@@ -129,8 +129,8 @@ int main()
 
 ```cpp
 #include <cassert>
-#include <score_calculator/core.hpp>
-using namespace score_calculator;
+#include <mahjong/score_calculator.hpp>
+using namespace mahjong::score_calculator;
 
 int main()
 {
@@ -188,9 +188,9 @@ Following expressions also avaliable.
 
 ```cpp
 #include <cassert>
-#include <score_calculator/core.hpp>
-using namespace score_calculator;
-using namespace score_calculator::literals;
+#include <mahjong/score_calculator.hpp>
+using namespace mahjong::score_calculator;
+using namespace mahjong::score_calculator::literals;
 
 int main()
 {
@@ -208,8 +208,8 @@ int main()
 You can manipulate hand tiles with method chains as follows.
 
 ```cpp
-#include <score_calculator/calc_score.hpp>
-using namespace score_calculator;
+#include <mahjong/score_calculator/calc_score.hpp>
+using namespace mahjong::score_calculator;
 
 int main()
 {
@@ -232,8 +232,8 @@ int main()
 
 ```cpp
 #include <cassert>
-#include <score_calculator/core.hpp>
-using namespace score_calculator;
+#include <mahjong/score_calculator.hpp>
+using namespace mahjong::score_calculator;
 
 int main()
 {

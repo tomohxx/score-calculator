@@ -1,12 +1,13 @@
-#ifndef SCORE_CALCULATOR_MELD_HPP
-#define SCORE_CALCULATOR_MELD_HPP
+#ifndef MAHJONG_SCORE_CALCULATOR_MELD_HPP
+#define MAHJONG_SCORE_CALCULATOR_MELD_HPP
 
-#include "tile.hpp"
-#include "types.hpp"
 #include <algorithm>
+#include <mahjong/score_calculator/tile.hpp>
+#include <mahjong/score_calculator/types.hpp>
+#include <string>
 #include <vector>
 
-namespace score_calculator {
+namespace mahjong::score_calculator {
   class Meld {
   private:
     MeldType meld_type;
@@ -24,11 +25,21 @@ namespace score_calculator {
 
     operator bool() const;
     Suits get_suit() const { return static_cast<Suits>(tiles[0].index / 9); }
+
+    operator std::string() const
+    {
+      std::string s;
+
+      for (const auto& tile : tiles) s += (tile.is_red ? "r" : "") + std::to_string(tile.index % 9 + 1);
+      s += suffix[static_cast<int>(get_suit())];
+
+      return meld_type == MeldType::ANKAN ? ("[[" + s + "]]") : ("[" + s + "]");
+    }
   };
 
   using Melds = std::vector<Meld>;
 
-  namespace internal {
+  namespace detail {
     Meld make_pon_chi_minkan(const Tiles& tiles);
     Meld make_ankan(const Tiles& tiles);
   }

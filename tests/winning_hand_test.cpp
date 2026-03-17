@@ -1,8 +1,8 @@
-#include "hand.hpp"
-#include "winning_hand.hpp"
 #include <gtest/gtest.h>
-using namespace score_calculator;
-using internal::Blocks;
+#include <mahjong/score_calculator.hpp>
+#include <mahjong/score_calculator/winning_hand.hpp>
+using namespace mahjong::score_calculator;
+using detail::Blocks;
 
 // 3N和了判定
 TEST(WinningHand, TestDetailIsWinningHand)
@@ -10,8 +10,8 @@ TEST(WinningHand, TestDetailIsWinningHand)
   Hand hand{{m1, m2, m3, m7, m8, m9, p2, p3, p4, s5, s6, s7, s9, s9}};
   Blocks blocks;
 
-  EXPECT_TRUE(internal::standard::detail::is_winning_hand(std::span(hand.tiles).subspan(0, 9), std::span(blocks).subspan(0, 9)));
-  EXPECT_TRUE(internal::standard::detail::is_winning_hand(std::span(hand.tiles).subspan(9, 9), std::span(blocks).subspan(9, 9)));
+  EXPECT_TRUE(detail::standard::detail::is_winning_hand(std::span(hand.tiles).subspan(0, 9), std::span(blocks).subspan(0, 9)));
+  EXPECT_TRUE(detail::standard::detail::is_winning_hand(std::span(hand.tiles).subspan(9, 9), std::span(blocks).subspan(9, 9)));
 }
 
 // 3N+2和了判定
@@ -21,7 +21,7 @@ TEST(WinningHand, TestDetailFindWinningHand)
   Blocks blocks;
   bool found = false;
 
-  internal::standard::detail::find_winning_hand(std::span(hand.tiles).subspan(18, 9),
+  detail::standard::detail::find_winning_hand(std::span(hand.tiles).subspan(18, 9),
                                                 std::span(blocks).subspan(18, 9),
                                                 [&found]() { found = true; });
 
@@ -35,7 +35,7 @@ TEST(WinningHand, TestWinningHandWithSuitsPair)
   Blocks blocks{};
   bool found = false;
 
-  internal::standard::find_winning_hand(hand.tiles, blocks, [&found]() { found = true; });
+  detail::standard::find_winning_hand(hand.tiles, blocks, [&found]() { found = true; });
 
   EXPECT_TRUE(found);
 }
@@ -47,7 +47,7 @@ TEST(WinningHand, TestWinningHandWithHonorTilePair)
   Blocks blocks{};
   bool found = false;
 
-  internal::standard::find_winning_hand(hand.tiles, blocks, [&found]() { found = true; });
+  detail::standard::find_winning_hand(hand.tiles, blocks, [&found]() { found = true; });
 
   EXPECT_TRUE(found);
 }
@@ -59,7 +59,7 @@ TEST(WinningHand, TestCannotDeterminatePair)
   Blocks blocks{};
   int cnt = 0;
 
-  internal::standard::find_winning_hand(hand.tiles, blocks, [&cnt]() { ++cnt; });
+  detail::standard::find_winning_hand(hand.tiles, blocks, [&cnt]() { ++cnt; });
 
   EXPECT_EQ(cnt, 2);
 }
@@ -71,8 +71,8 @@ TEST(WinningHand, TestCannotDeterminateMeld)
   Blocks blocks{};
   int cnt = 0;
 
-  internal::standard::find_winning_hand(hand.tiles, blocks, [&cnt, &blocks]() {
-    internal::standard::swap_blocks(blocks, [&cnt]() { ++cnt; });
+  detail::standard::find_winning_hand(hand.tiles, blocks, [&cnt, &blocks]() {
+    detail::standard::swap_blocks(blocks, [&cnt]() { ++cnt; });
   });
 
   EXPECT_EQ(cnt, 2);

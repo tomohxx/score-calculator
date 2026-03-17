@@ -1,11 +1,11 @@
-#ifndef SCORE_CALCULATOR_DECOMPOSE_HPP
-#define SCORE_CALCULATOR_DECOMPOSE_HPP
+#ifndef MAHJONG_SCORE_CALCULATOR_DECOMPOSE_HPP
+#define MAHJONG_SCORE_CALCULATOR_DECOMPOSE_HPP
 
-#include "types.hpp"
 #include <functional>
+#include <mahjong/score_calculator/types.hpp>
 #include <span>
 
-namespace score_calculator::internal {
+namespace mahjong::score_calculator::detail {
   namespace standard {
     namespace detail {
       bool is_winning_hand(std::span<int> tiles, std::span<Block> blocks);

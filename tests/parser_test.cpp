@@ -1,10 +1,10 @@
-#include "parser.hpp"
 #include <gtest/gtest.h>
-using namespace score_calculator;
+#include <mahjong/score_calculator.hpp>
+using namespace mahjong::score_calculator;
 
 TEST(Parser, TestFromMPSZ1)
 {
-  const Tiles tiles1 = from_mpsz("1234056789m123p789s");
+  const Tiles tiles1 = from_mpsz("1234r556789m123p789s");
   const Tiles tiles2{{m1, m2, m3, m4, m0, m5, m6, m7, m8, m9, p1, p2, p3, s7, s8, s9}};
 
   EXPECT_EQ(tiles1, tiles2);
@@ -23,10 +23,28 @@ TEST(Parser, TestFromMPSZ2)
       {MeldType::ANKAN, {z1, z1, z1, z1}},
   };
 
-  from_mpsz("1234056789m123p123s[111m][456m][9999s][[1111z]]", hand1, melds1);
+  from_mpsz("1234r556789m123p123s[111m][456m][9999s][[1111z]]", hand1, melds1);
 
   EXPECT_EQ(hand1, hand2);
   EXPECT_EQ(melds1, melds2);
+}
+
+TEST(Parser, TestFromMPSZ3)
+{
+  Hand hand;
+  Melds melds;
+
+  EXPECT_THROW(from_mpsz("1234r556789m123p123s[[111m][456m][9999s][[1111z]]", hand, melds),
+               std::invalid_argument);
+}
+
+TEST(Parser, TestFromMPSZ4)
+{
+  Hand hand;
+  Melds melds;
+
+  EXPECT_THROW(from_mpsz("1234r556789m123p123s[111m[456m][9999s][[1111z]]", hand, melds),
+               std::invalid_argument);
 }
 
 TEST(Parser, TestToMPSZ)
@@ -39,7 +57,9 @@ TEST(Parser, TestToMPSZ)
       {MeldType::ANKAN, {z1, z1, z1, z1}},
   };
 
-  const auto str_mpsz = to_mpsz(hand, melds);
+  const auto mpsz_regular = parser::regular::to_mpsz(hand, melds);
+  const auto mpsz_tenhou = parser::tenhou::to_mpsz(hand, melds);
 
-  EXPECT_EQ(str_mpsz, "1234056789m123p123s[111m][456m][9999s][[1111z]]");
+  EXPECT_EQ(mpsz_regular, "1234r556789m123p123s[111m][456m][9999s][[1111z]]");
+  EXPECT_EQ(mpsz_tenhou, "1234056789m123p123s[111m][456m][9999s][[1111z]]");
 }

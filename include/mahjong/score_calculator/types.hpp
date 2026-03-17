@@ -1,10 +1,12 @@
-#ifndef SCORE_CALCULATOR_TYPES_HPP
-#define SCORE_CALCULATOR_TYPES_HPP
+#ifndef MAHJONG_SCORE_CALCULATOR_TYPES_HPP
+#define MAHJONG_SCORE_CALCULATOR_TYPES_HPP
 
 #include <array>
+#include <string>
 
-namespace score_calculator {
+namespace mahjong::score_calculator {
   constexpr int NUM_TIDS = 34;
+  constexpr std::string suffix = "mpsz";
 
   using Arr = std::array<int, NUM_TIDS>;
 
@@ -16,7 +18,7 @@ namespace score_calculator {
     ANKAN,  // 暗槓
   };
 
-  namespace internal {
+  namespace detail {
     // ブロック
     struct Block {
       unsigned int num_pair : 1 = 0;            // 雀頭の数
@@ -80,7 +82,7 @@ namespace score_calculator {
     MANZU, // 萬子
     PINZU, // 筒子
     SOUZU, // 索子
-    ZIHAI, // 字牌
+    JIHAI, // 字牌
   };
 
   // 役ID
@@ -160,7 +162,7 @@ namespace score_calculator {
     CHIIHOU = static_cast<int>(YakuId::CHIIHOU),               // 地和
   };
 
-  namespace internal {
+  namespace detail {
     // 1翻役
 
     constexpr int NUM_YAKU_MENZENCHIN_TSUMOHOU = 1; // 面前清自摸和

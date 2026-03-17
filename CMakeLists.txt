@@ -4,48 +4,29 @@ project(score-calculator LANGUAGES CXX)
 
 find_package(GTest REQUIRED)
 
-set(SCORE_CALCULATOR_SOURCES
+add_library(score_calculator
   src/fu_han.cpp
   src/meld.cpp
   src/parser.cpp
   src/score.cpp
   src/winning_hand.cpp
   src/yaku.cpp)
-
-set(SCORE_CALCULATOR_HEADERS
-  src/config.hpp
-  src/core.hpp
-  src/fu_han.hpp
-  src/hand.hpp
-  src/meld.hpp
-  src/parser.hpp
-  src/result.hpp
-  src/score.hpp
-  src/tile.hpp
-  src/types.hpp
-  src/winning_hand.hpp
-  src/yaku.hpp)
-
-add_library(score_calculator
-  ${SCORE_CALCULATOR_SOURCES}
-  ${SCORE_CALCULATOR_HEADERS})
 target_compile_features(score_calculator PUBLIC cxx_std_23)
 target_compile_options(score_calculator PUBLIC
   $<$<CONFIG:Debug>:-O0 -Wall -Wextra -g>
   $<$<CONFIG:Release>:-O3 -Wall -Wextra>)
 target_include_directories(score_calculator PUBLIC
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
-
-set_target_properties(score_calculator PROPERTIES PUBLIC_HEADER "${SCORE_CALCULATOR_HEADERS}")
 
 install(TARGETS score_calculator
   EXPORT ScoreCalculator
-  LIBRARY DESTINATION lib
-  PUBLIC_HEADER DESTINATION include/score_calculator)
+  LIBRARY DESTINATION lib)
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/mahjong DESTINATION include)
 install(EXPORT ScoreCalculator
   FILE ScoreCalculatorConfig.cmake
-  DESTINATION share/cmake)
+  NAMESPACE Mahjong::
+  DESTINATION share/cmake/mahjong)
 
 enable_testing()
 

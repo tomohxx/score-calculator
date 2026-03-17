@@ -1,7 +1,6 @@
-#include "core.hpp"
-#include "score.hpp"
 #include <gtest/gtest.h>
-using namespace score_calculator;
+#include <mahjong/score_calculator.hpp>
+using namespace mahjong::score_calculator;
 
 // 不正な和了牌
 TEST(FuHan, TestInvalidWinningTile)

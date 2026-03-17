@@ -1,9 +1,9 @@
 // https://tomohxx.github.io/mahjong-algorithm-book/winning_hand/
-#include "winning_hand.hpp"
 #include <cassert>
+#include <mahjong/score_calculator/winning_hand.hpp>
 #include <numeric>
 
-namespace score_calculator::internal {
+namespace mahjong::score_calculator::detail {
   void standard::find_winning_hand(Arr& tiles, Blocks& blocks, std::function<void()> on_success)
   {
     int pos_pair = -1;

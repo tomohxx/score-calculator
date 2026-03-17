@@ -1,15 +1,17 @@
-#ifndef SCORE_CALCULATOR_HAND_HPP
-#define SCORE_CALCULATOR_HAND_HPP
+#ifndef MAHJONG_SCORE_CALCULATOR_HAND_HPP
+#define MAHJONG_SCORE_CALCULATOR_HAND_HPP
 
-#include "meld.hpp"
-#include "tile.hpp"
-#include "types.hpp"
 #include <algorithm>
 #include <cassert>
+#include <mahjong/score_calculator/meld.hpp>
+#include <mahjong/score_calculator/tile.hpp>
+#include <mahjong/score_calculator/types.hpp>
 #include <numeric>
+#include <span>
+#include <string>
 #include <utility>
 
-namespace score_calculator {
+namespace mahjong::score_calculator {
   struct Hand {
     Arr tiles{};
     Arr red_dora{};
@@ -117,7 +119,42 @@ namespace score_calculator {
     int calc_sum() const { return std::accumulate(tiles.begin(), tiles.end(), 0); }
 
     explicit Hand(const Tiles& tiles) { draw(tiles); }
+    explicit operator std::string() const;
   };
+
+  namespace detail {
+    struct HandView {
+      const Suits suits;
+      std::span<const int> tiles;
+      std::span<const int> red_dora;
+
+      HandView(const Suits suits, const Hand& hand) : suits(suits)
+      {
+        tiles = std::span(hand.tiles).subspan(static_cast<int>(suits) * 9, suits == Suits::JIHAI ? 7 : 9);
+        red_dora = std::span(hand.red_dora).subspan(static_cast<int>(suits) * 9, suits == Suits::JIHAI ? 7 : 9);
+      }
+
+      operator std::string() const
+      {
+        std::string s;
+
+        for (std::size_t tid = 0u; tid < tiles.size(); ++tid) {
+          for (int i = 0; i < red_dora[tid]; ++i) (s += 'r') += tid + '1';
+          for (int i = 0; i < tiles[tid] - red_dora[tid]; ++i) s += tid + '1';
+        }
+
+        return s.empty() ? s : (s += suffix[static_cast<int>(suits)]);
+      }
+    };
+  }
+
+  inline Hand::operator std::string() const
+  {
+    return static_cast<std::string>(detail::HandView(Suits::MANZU, *this)) +
+           static_cast<std::string>(detail::HandView(Suits::PINZU, *this)) +
+           static_cast<std::string>(detail::HandView(Suits::SOUZU, *this)) +
+           static_cast<std::string>(detail::HandView(Suits::JIHAI, *this));
+  }
 }
 
 #endif
