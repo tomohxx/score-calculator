@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.12)
 
 project(score-calculator LANGUAGES CXX)
 
-find_package(GTest REQUIRED)
+find_package(GTest QUIET)
 
 add_library(score_calculator
   src/fu_han.cpp
@@ -28,19 +28,23 @@ install(EXPORT ScoreCalculator
   NAMESPACE Mahjong::
   DESTINATION share/cmake/mahjong)
 
-enable_testing()
+if(GTest_FOUND)
+  enable_testing()
 
-add_executable(score_calculator_test
-  tests/fu_han_test.cpp
-  tests/parser_test.cpp
-  tests/score_test.cpp
-  tests/winning_hand_test.cpp)
-target_include_directories(score_calculator_test PRIVATE src)
-target_link_libraries(score_calculator_test PRIVATE
-  score_calculator
-  GTest::GTest
-  GTest::Main)
-target_compile_options(score_calculator_test PRIVATE -Wno-missing-field-initializers)
+  add_executable(score_calculator_test
+    tests/fu_han_test.cpp
+    tests/parser_test.cpp
+    tests/score_test.cpp
+    tests/winning_hand_test.cpp)
+  target_include_directories(score_calculator_test PRIVATE src)
+  target_link_libraries(score_calculator_test PRIVATE
+    score_calculator
+    GTest::GTest
+    GTest::Main)
+  target_compile_options(score_calculator_test PRIVATE -Wno-missing-field-initializers)
 
-include(GoogleTest)
-gtest_discover_tests(score_calculator_test)
+  include(GoogleTest)
+  gtest_discover_tests(score_calculator_test)
+else()
+  message(STATUS "GTest not found; tests are disabled")
+endif()
