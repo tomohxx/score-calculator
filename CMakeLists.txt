@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.12)
 
 project(score-calculator LANGUAGES CXX)
 
+include(GNUInstallDirs)
+
 find_package(GTest QUIET)
 
 add_library(score_calculator
@@ -22,11 +24,11 @@ target_include_directories(score_calculator PUBLIC
 install(TARGETS score_calculator
   EXPORT ScoreCalculator
   LIBRARY DESTINATION lib)
-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/mahjong DESTINATION include)
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/mahjong DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 install(EXPORT ScoreCalculator
   FILE ScoreCalculatorConfig.cmake
-  NAMESPACE Mahjong::
-  DESTINATION share/cmake/mahjong)
+  NAMESPACE ScoreCalculator::
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/mahjong)
 
 if(GTest_FOUND)
   enable_testing()
