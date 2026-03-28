@@ -1,5 +1,4 @@
 #include <cassert>
-#include <iostream>
 #include <mahjong/score_calculator/fu_han.hpp>
 #include <mahjong/score_calculator/winning_hand.hpp>
 #include <mahjong/score_calculator/yaku.hpp>
@@ -204,7 +203,13 @@ namespace mahjong::score_calculator {
         swap_blocks(closed_blocks, [&]() {
           const auto tmp = calc_fu_han(closed_blocks, open_blocks, whole_hand, winning_tile, config, is_open);
 
-          result = std::max(std::move(result), std::move(tmp));
+          if (result.num_yakuman > 0 || tmp.num_yakuman > 0) {
+            result = std::max(std::move(result), std::move(tmp), [](const Result& x, const Result& y) { return x.num_yakuman < y.num_yakuman; });
+          }
+          else {
+            result = std::max(std::move(result), std::move(tmp), [](const Result& x, const Result& y) { return x.num_han < y.num_han || (x.num_han == y.num_han && x.num_fu < y.num_fu); });
+          }
+
           found = true;
         });
       });
