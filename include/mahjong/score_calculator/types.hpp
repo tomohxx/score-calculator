@@ -2,11 +2,9 @@
 #define MAHJONG_SCORE_CALCULATOR_TYPES_HPP
 
 #include <array>
-#include <string>
 
 namespace mahjong::score_calculator {
   constexpr int NUM_TIDS = 34;
-  constexpr std::string suffix = "mpsz";
 
   using Arr = std::array<int, NUM_TIDS>;
 
@@ -19,6 +17,7 @@ namespace mahjong::score_calculator {
   };
 
   namespace detail {
+    constexpr std::array<char, 4> suffix = {'m', 'p', 's', 'z'};
     // ブロック
     struct Block {
       unsigned int num_pair : 1 = 0;            // 雀頭の数

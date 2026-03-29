@@ -141,7 +141,7 @@ namespace mahjong::score_calculator {
         }
 
         if (!t.empty()) {
-          s += t += suffix[i];
+          s += t += detail::suffix[i];
         }
       }
 

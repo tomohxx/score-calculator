@@ -27,7 +27,7 @@ namespace mahjong::score_calculator {
     bool is_terminal() const { return index < 27 && index % 9 % 8 == 0; }
     bool is_honor() const { return !is_suits(); }
     bool is_terminal_or_honor() const { return !is_simple(); }
-    explicit operator std::string() const { return (is_red ? "r" : "") + std::to_string(index % 9 + 1) + suffix[index / 9]; }
+    explicit operator std::string() const { return (is_red ? "r" : "") + std::to_string(index % 9 + 1) + detail::suffix[index / 9]; }
   };
 
   using Tiles = std::vector<Tile>;

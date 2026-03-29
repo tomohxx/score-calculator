@@ -31,7 +31,7 @@ namespace mahjong::score_calculator {
       std::string s;
 
       for (const auto& tile : tiles) s += (tile.is_red ? "r" : "") + std::to_string(tile.index % 9 + 1);
-      s += suffix[static_cast<int>(get_suit())];
+      s += detail::suffix[static_cast<int>(get_suit())];
 
       return meld_type == MeldType::ANKAN ? ("[[" + s + "]]") : ("[" + s + "]");
     }
