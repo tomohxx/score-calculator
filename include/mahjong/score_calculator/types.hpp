@@ -164,59 +164,59 @@ namespace mahjong::score_calculator {
   namespace detail {
     // 1翻役
 
-    constexpr int NUM_YAKU_MENZENCHIN_TSUMOHOU = 1; // 面前清自摸和
-    constexpr int NUM_YAKU_RIICHI = 1;              // 立直
-    constexpr int NUM_YAKU_IPPATSU = 1;             // 一発
-    constexpr int NUM_YAKU_CHANKAN = 1;             // 搶槓
-    constexpr int NUM_YAKU_RINSHAN_KAIHOU = 1;      // 嶺上開花
-    constexpr int NUM_YAKU_HAITEI_RAOYUE = 1;       // 海底撈月
-    constexpr int NUM_YAKU_HOUTEI_RAOYUI = 1;       // 河底撈魚
-    constexpr int NUM_YAKU_PINFU = 1;               // 平和
-    constexpr int NUM_YAKU_TANYAOCHUU = 1;          // 断幺九
-    constexpr int NUM_YAKU_IIPEIKOU = 1;            // 一盃口
-    constexpr int NUM_YAKU_YAKUHAI_EAST_SEAT = 1;   // 役牌(自風 東)
-    constexpr int NUM_YAKU_YAKUHAI_SOUTH_SEAT = 1;  // 役牌(自風 南)
-    constexpr int NUM_YAKU_YAKUHAI_WEST_SEAT = 1;   // 役牌(自風 西)
-    constexpr int NUM_YAKU_YAKUHAI_NORTH_SEAT = 1;  // 役牌(自風 西)
-    constexpr int NUM_YAKU_YAKUHAI_EAST_ROUND = 1;  // 役牌(場風 東)
-    constexpr int NUM_YAKU_YAKUHAI_SOUTH_ROUND = 1; // 役牌(場風 南)
-    constexpr int NUM_YAKU_YAKUHAI_WEST_ROUND = 1;  // 役牌(場風 西)
-    constexpr int NUM_YAKU_YAKUHAI_NORTH_ROUND = 1; // 役牌(場風 北)
-    constexpr int NUM_YAKU_YAKUHAI_WHITE = 1;       // 役牌(白)
-    constexpr int NUM_YAKU_YAKUHAI_GREEN = 1;       // 役牌(発)
-    constexpr int NUM_YAKU_YAKUHAI_RED = 1;         // 役牌(中)
+    constexpr unsigned int NUM_YAKU_MENZENCHIN_TSUMOHOU = 1u; // 面前清自摸和
+    constexpr unsigned int NUM_YAKU_RIICHI = 1u;              // 立直
+    constexpr unsigned int NUM_YAKU_IPPATSU = 1u;             // 一発
+    constexpr unsigned int NUM_YAKU_CHANKAN = 1u;             // 搶槓
+    constexpr unsigned int NUM_YAKU_RINSHAN_KAIHOU = 1u;      // 嶺上開花
+    constexpr unsigned int NUM_YAKU_HAITEI_RAOYUE = 1u;       // 海底撈月
+    constexpr unsigned int NUM_YAKU_HOUTEI_RAOYUI = 1u;       // 河底撈魚
+    constexpr unsigned int NUM_YAKU_PINFU = 1u;               // 平和
+    constexpr unsigned int NUM_YAKU_TANYAOCHUU = 1u;          // 断幺九
+    constexpr unsigned int NUM_YAKU_IIPEIKOU = 1u;            // 一盃口
+    constexpr unsigned int NUM_YAKU_YAKUHAI_EAST_SEAT = 1u;   // 役牌(自風 東)
+    constexpr unsigned int NUM_YAKU_YAKUHAI_SOUTH_SEAT = 1u;  // 役牌(自風 南)
+    constexpr unsigned int NUM_YAKU_YAKUHAI_WEST_SEAT = 1u;   // 役牌(自風 西)
+    constexpr unsigned int NUM_YAKU_YAKUHAI_NORTH_SEAT = 1u;  // 役牌(自風 西)
+    constexpr unsigned int NUM_YAKU_YAKUHAI_EAST_ROUND = 1u;  // 役牌(場風 東)
+    constexpr unsigned int NUM_YAKU_YAKUHAI_SOUTH_ROUND = 1u; // 役牌(場風 南)
+    constexpr unsigned int NUM_YAKU_YAKUHAI_WEST_ROUND = 1u;  // 役牌(場風 西)
+    constexpr unsigned int NUM_YAKU_YAKUHAI_NORTH_ROUND = 1u; // 役牌(場風 北)
+    constexpr unsigned int NUM_YAKU_YAKUHAI_WHITE = 1u;       // 役牌(白)
+    constexpr unsigned int NUM_YAKU_YAKUHAI_GREEN = 1u;       // 役牌(発)
+    constexpr unsigned int NUM_YAKU_YAKUHAI_RED = 1u;         // 役牌(中)
 
     // 2翻役
 
-    constexpr int NUM_YAKU_DOUBLE_RIICHI = 2;     // 両立直
-    constexpr int NUM_YAKU_CHIITOITSU = 2;        // 七対子
-    constexpr int NUM_YAKU_HONCHANTAIYAOCHUU = 2; // 混全帯幺九
-    constexpr int NUM_YAKU_IKKITSUUKAN = 2;       // 一気通貫
-    constexpr int NUM_YAKU_SANSHOKU_DOUJUN = 2;   // 三色同順
-    constexpr int NUM_YAKU_SANSHOKU_DOUKOU = 2;   // 三色同刻
-    constexpr int NUM_YAKU_SANKANTSU = 2;         // 三槓子
-    constexpr int NUM_YAKU_TOITOIHOU = 2;         // 対々和
-    constexpr int NUM_YAKU_SANANKOU = 2;          // 三暗刻
-    constexpr int NUM_YAKU_SHOUSANGEN = 2;        // 小三元
-    constexpr int NUM_YAKU_HONROUTOU = 2;         // 混老頭
+    constexpr unsigned int NUM_YAKU_DOUBLE_RIICHI = 2u;     // 両立直
+    constexpr unsigned int NUM_YAKU_CHIITOITSU = 2u;        // 七対子
+    constexpr unsigned int NUM_YAKU_HONCHANTAIYAOCHUU = 2u; // 混全帯幺九
+    constexpr unsigned int NUM_YAKU_IKKITSUUKAN = 2u;       // 一気通貫
+    constexpr unsigned int NUM_YAKU_SANSHOKU_DOUJUN = 2u;   // 三色同順
+    constexpr unsigned int NUM_YAKU_SANSHOKU_DOUKOU = 2u;   // 三色同刻
+    constexpr unsigned int NUM_YAKU_SANKANTSU = 2u;         // 三槓子
+    constexpr unsigned int NUM_YAKU_TOITOIHOU = 2u;         // 対々和
+    constexpr unsigned int NUM_YAKU_SANANKOU = 2u;          // 三暗刻
+    constexpr unsigned int NUM_YAKU_SHOUSANGEN = 2u;        // 小三元
+    constexpr unsigned int NUM_YAKU_HONROUTOU = 2u;         // 混老頭
 
     // 3翻役
 
-    constexpr int NUM_YAKU_RYANPEIKOU = 3;        // 二盃口
-    constexpr int NUM_YAKU_JUNCHANTAIYAOCHUU = 3; // 純全帯幺九
-    constexpr int NUM_YAKU_HONIISOU = 3;          // 混一色
+    constexpr int NUM_YAKU_RYANPEIKOU = 3u;        // 二盃口
+    constexpr int NUM_YAKU_JUNCHANTAIYAOCHUU = 3u; // 純全帯幺九
+    constexpr int NUM_YAKU_HONIISOU = 3u;          // 混一色
 
     // 6翻役
 
-    constexpr int NUM_YAKU_CHINIISOU = 6; // 清一色
+    constexpr int NUM_YAKU_CHINIISOU = 6u; // 清一色
 
     // 役満
 
-    constexpr int SINGLE_YAKUMAN = 1;
-    constexpr int DOUBLE_YAKUMAN = 2;
+    constexpr int SINGLE_YAKUMAN = 1u;
+    constexpr int DOUBLE_YAKUMAN = 2u;
 
-    constexpr int NUM_FU_SEVEN_PAIRS = 25;     // 七対子の符
-    constexpr int NUM_FU_THIRTEEN_ORPHANS = 0; // 国士無双の符
+    constexpr int NUM_FU_SEVEN_PAIRS = 25u;     // 七対子の符
+    constexpr int NUM_FU_THIRTEEN_ORPHANS = 0u; // 国士無双の符
   }
 }
 

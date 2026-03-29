@@ -3,16 +3,16 @@
 using namespace mahjong::score_calculator;
 
 struct TestRonParam {
-  int num_hu;
-  int num_han;
-  int correct_payment;
+  unsigned int num_hu;
+  unsigned int num_han;
+  unsigned int correct_payment;
 };
 
 struct TestTsumoParam {
-  int num_hu;
-  int num_han;
-  int correct_payment1;
-  int correct_payment2;
+  unsigned int num_hu;
+  unsigned int num_han;
+  unsigned int correct_payment1;
+  unsigned int correct_payment2;
 };
 
 class TestNonDealerRon : public ::testing::TestWithParam<TestRonParam> {};
