@@ -1,4 +1,5 @@
 #include <mahjong/score_calculator/tile.hpp>
+#include <unordered_map>
 
 namespace mahjong::score_calculator {
   const std::unordered_map<std::string, Tile> tile_from_string = {

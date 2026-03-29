@@ -33,18 +33,6 @@ namespace {
 
 namespace mahjong::score_calculator::parser {
   namespace regular {
-    Tiles from_mpsz(const std::string& mpsz)
-    {
-      static const std::regex re("(?:(?:r?[1-9])+[mps]|[1-7]+z)+");
-
-      if (std::regex_match(mpsz, re)) {
-        return ::from_mpsz(mpsz);
-      }
-      else {
-        throw std::invalid_argument("Invalid mpsz string");
-      }
-    }
-
     void from_mpsz(const std::string& mpsz, Hand& hand, Melds& melds)
     {
       static const std::regex re("\\[{0,2}(?:(?:r?[1-9])+[mps]|[1-7]+z)+\\]{0,2}");
@@ -86,13 +74,6 @@ namespace mahjong::score_calculator::parser {
   }
 
   namespace tenhou {
-    Tiles from_mpsz(const std::string& mpsz)
-    {
-      const auto tmp = std::regex_replace(mpsz, std::regex("0"), "r5");
-
-      return regular::from_mpsz(tmp);
-    }
-
     void from_mpsz(const std::string& mpsz, Hand& hand, Melds& melds)
     {
       const auto tmp = std::regex_replace(mpsz, std::regex("0"), "r5");

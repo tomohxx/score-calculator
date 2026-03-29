@@ -4,14 +4,6 @@ using namespace mahjong::score_calculator;
 
 TEST(Parser, TestFromMPSZ1)
 {
-  const Tiles tiles1 = from_mpsz("1234r556789m123p789s");
-  const Tiles tiles2{{m1, m2, m3, m4, m0, m5, m6, m7, m8, m9, p1, p2, p3, s7, s8, s9}};
-
-  EXPECT_EQ(tiles1, tiles2);
-}
-
-TEST(Parser, TestFromMPSZ2)
-{
   Hand hand1;
   Melds melds1;
 
@@ -29,7 +21,7 @@ TEST(Parser, TestFromMPSZ2)
   EXPECT_EQ(melds1, melds2);
 }
 
-TEST(Parser, TestFromMPSZ3)
+TEST(Parser, TestFromMPSZ2)
 {
   Hand hand;
   Melds melds;
@@ -38,7 +30,7 @@ TEST(Parser, TestFromMPSZ3)
                std::invalid_argument);
 }
 
-TEST(Parser, TestFromMPSZ4)
+TEST(Parser, TestFromMPSZ3)
 {
   Hand hand;
   Melds melds;
