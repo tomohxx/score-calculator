@@ -82,7 +82,7 @@ namespace mahjong::score_calculator::detail {
     int cnt = 0;
 
     for (int tid = 0; tid < east.index; ++tid) {
-      if (blocks[tid].num_closed_sequence >= 2) ++cnt;
+      cnt += blocks[tid].num_closed_sequence / 2;
     }
 
     if (cnt == 1) {
