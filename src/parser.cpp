@@ -33,9 +33,11 @@ namespace {
 
 namespace mahjong::score_calculator::parser {
   namespace regular {
-    void from_mpsz(const std::string& mpsz, Hand& hand, Melds& melds)
+    std::tuple<Hand, Melds> from_mpsz(const std::string& mpsz)
     {
       static const std::regex re("\\[{0,2}(?:(?:r?[1-9])+[mps]|[1-7]+z)+\\]{0,2}");
+      Hand hand;
+      Melds melds;
 
       for (std::sregex_iterator it(std::begin(mpsz), std::end(mpsz), re), end; it != end; ++it) {
         const auto s = it->str();
@@ -59,26 +61,28 @@ namespace mahjong::score_calculator::parser {
           hand.draw(tiles);
         }
       }
+
+      return {hand, melds};
     }
 
     std::string to_mpsz(const Hand& hand, const Melds& melds)
     {
-      std::string s = static_cast<std::string>(hand);
+      std::string mpsz = static_cast<std::string>(hand);
 
       for (const auto& meld : melds) {
-        s += static_cast<std::string>(meld);
+        mpsz += static_cast<std::string>(meld);
       }
 
-      return s;
+      return mpsz;
     }
   }
 
   namespace tenhou {
-    void from_mpsz(const std::string& mpsz, Hand& hand, Melds& melds)
+    std::tuple<Hand, Melds> from_mpsz(const std::string& mpsz)
     {
       const auto tmp = std::regex_replace(mpsz, std::regex("0"), "r5");
 
-      return regular::from_mpsz(tmp, hand, melds);
+      return regular::from_mpsz(tmp);
     }
 
     std::string to_mpsz(const Hand& hand, const Melds& melds)

@@ -5,16 +5,17 @@
 #include <mahjong/score_calculator/meld.hpp>
 #include <mahjong/score_calculator/tile.hpp>
 #include <string>
+#include <tuple>
 
 namespace mahjong::score_calculator {
   namespace parser {
     namespace regular {
-      void from_mpsz(const std::string&, Hand&, Melds&);
+      std::tuple<Hand, Melds> from_mpsz(const std::string&);
       std::string to_mpsz(const Hand&, const Melds& = {});
     }
 
     namespace tenhou {
-      void from_mpsz(const std::string&, Hand&, Melds&);
+      std::tuple<Hand, Melds> from_mpsz(const std::string&);
       std::string to_mpsz(const Hand&, const Melds& = {});
     }
   }

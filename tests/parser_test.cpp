@@ -4,9 +4,7 @@ using namespace mahjong::score_calculator;
 
 TEST(Parser, TestFromMPSZ1)
 {
-  Hand hand1;
-  Melds melds1;
-
+  const auto [hand1, melds1] = from_mpsz("1234r556789m123p123s[111m][456m][9999s][[1111z]]");
   const Hand hand2{{m1, m2, m3, m4, m0, m5, m6, m7, m8, m9, p1, p2, p3, s1, s2, s3}};
   const Melds melds2{
       {MeldType::PON, {m1, m1, m1}},
@@ -15,28 +13,18 @@ TEST(Parser, TestFromMPSZ1)
       {MeldType::ANKAN, {z1, z1, z1, z1}},
   };
 
-  from_mpsz("1234r556789m123p123s[111m][456m][9999s][[1111z]]", hand1, melds1);
-
   EXPECT_EQ(hand1, hand2);
   EXPECT_EQ(melds1, melds2);
 }
 
 TEST(Parser, TestFromMPSZ2)
 {
-  Hand hand;
-  Melds melds;
-
-  EXPECT_THROW(from_mpsz("1234r556789m123p123s[[111m][456m][9999s][[1111z]]", hand, melds),
-               std::invalid_argument);
+  EXPECT_THROW(from_mpsz("1234r556789m123p123s[[111m][456m][9999s][[1111z]]"), std::invalid_argument);
 }
 
 TEST(Parser, TestFromMPSZ3)
 {
-  Hand hand;
-  Melds melds;
-
-  EXPECT_THROW(from_mpsz("1234r556789m123p123s[111m[456m][9999s][[1111z]]", hand, melds),
-               std::invalid_argument);
+  EXPECT_THROW(from_mpsz("1234r556789m123p123s[111m[456m][9999s][[1111z]]"), std::invalid_argument);
 }
 
 TEST(Parser, TestToMPSZ)
