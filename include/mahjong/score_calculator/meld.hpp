@@ -19,6 +19,9 @@ namespace mahjong::score_calculator {
       std::sort(this->tiles.begin(), this->tiles.end(), [](const Tile& x, const Tile& y) { return x.index < y.index; });
     }
 
+    static Meld make_pon_chi_minkan(const Tiles& tiles);
+    static Meld make_ankan(const Tiles& tiles);
+
     const MeldType& get_meld_type() const { return meld_type; }
     const Tiles& get_tiles() const { return tiles; }
     const int& get_min_index() const { return tiles[0].index; }
@@ -30,11 +33,6 @@ namespace mahjong::score_calculator {
   };
 
   using Melds = std::vector<Meld>;
-
-  namespace detail {
-    Meld make_pon_chi_minkan(const Tiles& tiles);
-    Meld make_ankan(const Tiles& tiles);
-  }
 
   inline const Meld pon_m111{MeldType::PON, {m1, m1, m1}};
   inline const Meld pon_m222{MeldType::PON, {m2, m2, m2}};

@@ -42,14 +42,14 @@ namespace mahjong::score_calculator::parser {
         const auto tiles = ::from_mpsz(s);
         // 暗槓
         if (s.starts_with("[[") && s.ends_with("]]")) {
-          melds.push_back(detail::make_ankan(tiles));
+          melds.push_back(Meld::make_ankan(tiles));
         }
         else if (s.starts_with("[[") || s.ends_with("]]")) {
           throw std::invalid_argument("Invalid mpsz string");
         }
         // ポン, チー, 明槓
         else if (s.starts_with("[") && s.ends_with("]")) {
-          melds.push_back(detail::make_pon_chi_minkan(tiles));
+          melds.push_back(Meld::make_pon_chi_minkan(tiles));
         }
         else if (s.starts_with("[") || s.ends_with("]")) {
           throw std::invalid_argument("Invalid mpsz string");

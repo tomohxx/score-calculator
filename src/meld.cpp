@@ -2,16 +2,6 @@
 #include <stdexcept>
 
 namespace mahjong::score_calculator {
-  Meld::operator std::string() const
-  {
-    std::string s;
-
-    for (const auto& tile : tiles) s += (tile.is_red ? "r" : "") + std::to_string(tile.index % 9 + 1);
-    s += detail::suffix[static_cast<int>(get_suit())];
-
-    return meld_type == MeldType::ANKAN ? ("[[" + s + "]]") : ("[" + s + "]");
-  }
-
   bool is_pon(const Tiles& tiles)
   {
     return tiles.size() == 3u &&
@@ -44,31 +34,39 @@ namespace mahjong::score_calculator {
            (meld_type == MeldType::ANKAN && is_kan(tiles));
   }
 
-  namespace detail {
-    Meld make_pon_chi_minkan(const Tiles& tiles)
-    {
-      if (is_pon(tiles)) {
-        return {MeldType::PON, tiles};
-      }
-      else if (is_chi(tiles)) {
-        return {MeldType::CHI, tiles};
-      }
-      else if (is_kan(tiles)) {
-        return {MeldType::MINKAN, tiles};
-      }
-      else {
-        throw std::invalid_argument("Invalid tiles");
-      }
+  Meld Meld::make_pon_chi_minkan(const Tiles& tiles)
+  {
+    if (is_pon(tiles)) {
+      return {MeldType::PON, tiles};
     }
+    else if (is_chi(tiles)) {
+      return {MeldType::CHI, tiles};
+    }
+    else if (is_kan(tiles)) {
+      return {MeldType::MINKAN, tiles};
+    }
+    else {
+      throw std::invalid_argument("Invalid tiles");
+    }
+  }
 
-    Meld make_ankan(const Tiles& tiles)
-    {
-      if (is_kan(tiles)) {
-        return {MeldType::ANKAN, tiles};
-      }
-      else {
-        throw std::invalid_argument("Invalid tiles");
-      }
+  Meld Meld::make_ankan(const Tiles& tiles)
+  {
+    if (is_kan(tiles)) {
+      return {MeldType::ANKAN, tiles};
     }
+    else {
+      throw std::invalid_argument("Invalid tiles");
+    }
+  }
+
+  Meld::operator std::string() const
+  {
+    std::string s;
+
+    for (const auto& tile : tiles) s += (tile.is_red ? "r" : "") + std::to_string(tile.index % 9 + 1);
+    s += detail::suffix[static_cast<int>(get_suit())];
+
+    return meld_type == MeldType::ANKAN ? ("[[" + s + "]]") : ("[" + s + "]");
   }
 }
