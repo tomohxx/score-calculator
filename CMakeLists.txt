@@ -8,6 +8,7 @@ find_package(GTest QUIET)
 
 add_library(score_calculator
   src/fu_han.cpp
+  src/hand.cpp
   src/meld.cpp
   src/parser.cpp
   src/score.cpp
