@@ -40,7 +40,6 @@ if(GTest_FOUND)
     tests/parser_test.cpp
     tests/score_test.cpp
     tests/winning_hand_test.cpp)
-  target_include_directories(score_calculator_test PRIVATE src)
   target_link_libraries(score_calculator_test PRIVATE
     score_calculator
     GTest::GTest
