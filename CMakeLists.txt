@@ -13,6 +13,7 @@ add_library(score_calculator
   src/parser.cpp
   src/score.cpp
   src/tile.cpp
+  src/utils.cpp
   src/winning_hand.cpp
   src/yaku.cpp)
 target_compile_features(score_calculator PUBLIC cxx_std_23)
