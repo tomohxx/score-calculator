@@ -35,7 +35,7 @@ namespace mahjong::score_calculator::parser {
   namespace regular {
     std::tuple<Hand, Melds> from_mpsz(const std::string& mpsz)
     {
-      static const std::regex re("\\[{0,2}(?:(?:r?[1-9])+[mps]|[1-7]+z)+\\]{0,2}");
+      static const std::regex re("\\[{0,2}(?:(?:[1-9]|r5)+[mps]|[1-7]+z)+\\]{0,2}");
       Hand hand;
       Melds melds;
 
