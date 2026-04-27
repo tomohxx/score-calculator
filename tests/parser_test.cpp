@@ -27,6 +27,11 @@ TEST(Parser, TestFromMPSZ3)
   EXPECT_THROW(from_mpsz("1234r556789m123p123s[111m[456m][9999s][[1111z]]"), std::invalid_argument);
 }
 
+TEST(Parser, TestFromMPSZ4)
+{
+  EXPECT_THROW(from_mpsz("1234r556789m123p123sX[111m]X[456m]X[9999s]X[[1111z]]"), std::invalid_argument);
+}
+
 TEST(Parser, TestToMPSZ)
 {
   const Hand hand{{m0, m1, m2, m3, m4, m5, m6, m7, m8, m9, p1, p2, p3, s1, s2, s3}};
