@@ -2,11 +2,11 @@
 #define MAHJONG_SCORE_CALCULATOR_HAND_HPP
 
 #include <algorithm>
-#include <cassert>
 #include <mahjong/score_calculator/meld.hpp>
 #include <mahjong/score_calculator/tile.hpp>
 #include <mahjong/score_calculator/types.hpp>
 #include <numeric>
+#include <stdexcept>
 #include <string>
 #include <utility>
 
@@ -25,7 +25,9 @@ namespace mahjong::score_calculator {
 
     auto draw(this auto&& self, const Tile& tile) -> decltype(auto)
     {
-      assert(self.tiles[tile.index] < 4);
+      if (self.tiles[tile.index] >= 4) {
+        throw std::invalid_argument("Tile count is greater than or equal to 4: " + static_cast<std::string>(tile));
+      }
 
       ++self.tiles[tile.index];
       if (tile.is_red) ++self.red_dora[tile.index];
@@ -35,7 +37,9 @@ namespace mahjong::score_calculator {
 
     auto discard(this auto&& self, const Tile& tile) -> decltype(auto)
     {
-      assert(self.tiles[tile.index] > 0);
+      if (self.tiles[tile.index] <= 0) {
+        throw std::invalid_argument("Tile count is less than or equal to 0: " + static_cast<std::string>(tile));
+      }
 
       --self.tiles[tile.index];
       if (tile.is_red) --self.red_dora[tile.index];
