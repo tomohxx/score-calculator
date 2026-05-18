@@ -69,7 +69,7 @@ namespace mahjong::score_calculator::parser {
         return from_mpsz_to_hand_melds(mpsz);
       }
       else {
-        throw std::invalid_argument("Invalid mpsz string");
+        throw std::invalid_argument("Invalid mpsz string:" + mpsz);
       }
     }
 
