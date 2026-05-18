@@ -22,6 +22,7 @@ namespace mahjong::score_calculator {
     explicit operator std::vector<int>() const { return std::vector<int>(tiles.begin(), tiles.end()); }
     bool operator==(const Hand& rhs) const { return tiles == rhs.tiles && red_dora == rhs.red_dora; }
     const std::array<int, NUM_TIDS>& as_array() const { return tiles; }
+    std::array<int, NUM_TIDS>& as_array() { return tiles; }
 
     auto draw(this auto&& self, const Tile& tile) -> decltype(auto)
     {
