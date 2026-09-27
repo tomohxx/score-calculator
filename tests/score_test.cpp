@@ -23,7 +23,7 @@ class TestDealerTsumo : public ::testing::TestWithParam<TestTsumoParam> {};
 TEST_P(TestNonDealerRon, Test)
 {
   const auto [num_hu, num_han, correct_payment] = GetParam();
-  const Result result{.num_fu = num_hu, .num_han = num_han};
+  const Result result{num_hu, num_han};
   const Config config{.seat_wind = WindType::SOUTH, .round_wind = WindType::EAST, .is_tsumo = false};
 
   const auto payment = static_cast<const RonPayment&&>(*calc_payment(result, config));
@@ -34,7 +34,7 @@ TEST_P(TestNonDealerRon, Test)
 TEST_P(TestDealerRon, Test)
 {
   const auto [num_hu, num_han, correct_payment] = GetParam();
-  const Result result{.num_fu = num_hu, .num_han = num_han};
+  const Result result{num_hu, num_han};
   const Config config{.seat_wind = WindType::EAST, .round_wind = WindType::EAST, .is_tsumo = false};
 
   const auto payment = static_cast<const RonPayment&&>(*calc_payment(result, config));
@@ -45,7 +45,7 @@ TEST_P(TestDealerRon, Test)
 TEST_P(TestNonDealerTsumo, Test)
 {
   const auto [num_hu, num_han, correct_payment1, correct_payment2] = GetParam();
-  const Result result{.num_fu = num_hu, .num_han = num_han};
+  const Result result{num_hu, num_han};
   const Config config{.seat_wind = WindType::SOUTH, .round_wind = WindType::EAST, .is_tsumo = true};
 
   const auto payment = static_cast<const TsumoPayment&&>(*calc_payment(result, config));
@@ -57,7 +57,7 @@ TEST_P(TestNonDealerTsumo, Test)
 TEST_P(TestDealerTsumo, Test)
 {
   const auto [num_hu, num_han, correct_payment1, correct_payment2] = GetParam();
-  const Result result{.num_fu = num_hu, .num_han = num_han};
+  const Result result{num_hu, num_han};
   const Config config{.seat_wind = WindType::EAST, .round_wind = WindType::EAST, .is_tsumo = true};
 
   const auto payment = static_cast<const TsumoPayment&&>(*calc_payment(result, config));
