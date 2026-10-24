@@ -11,19 +11,24 @@ namespace mahjong::score_calculator {
     void validate(Hand& hand, const Melds& melds, const Tile& winning_tile, const Config& config);
 
     namespace standard {
+      std::pair<bool, score_calculator::Result> calc_fu_han(Hand& hand,
+                                                            const Blocks& open_blocks,
+                                                            const Hand& whole_hand,
+                                                            const Tile& winning_tile,
+                                                            const Config& config,
+                                                            bool is_open);
       Result calc_fu_han(const Blocks& closed_blocks,
                          const Blocks& open_blocks,
                          const Hand& whole_hand,
                          const Tile& winning_tile,
+                         const WaitType& wait_type,
                          const Config& config,
                          bool is_open);
-      std::pair<bool, Result> calc_fu_han(Hand& hand,
-                                          const Blocks& open_blocks,
-                                          const Hand& whole_hand,
-                                          const Tile& winning_tile,
-                                          const Config& config,
-                                          bool is_open);
-      std::pair<int, bool> calc_fu(Blocks& blocks, const Tile& winning_tile, const Config& config, bool is_open);
+      std::pair<int, bool> calc_fu(Blocks& blocks,
+                                   const Tile& winning_tile,
+                                   const WaitType& wait_type,
+                                   const Config& config,
+                                   bool is_open);
     }
 
     namespace seven_pairs {
@@ -35,8 +40,6 @@ namespace mahjong::score_calculator {
     }
   }
 
-  using namespace detail;
-
   Result calc_fu_han(Hand& hand,
                      const Melds& melds,
                      const Tile& winning_tile,
@@ -45,14 +48,14 @@ namespace mahjong::score_calculator {
                      const bool check)
   {
     if (check) {
-      validate(hand, melds, winning_tile, config);
+      detail::validate(hand, melds, winning_tile, config);
     }
 
     // 副露フラグ
     const bool is_open = std::count_if(melds.begin(), melds.end(), [](const Meld& meld) {
       return meld.get_meld_type() != MeldType::ANKAN;
     });
-    Blocks open_blocks{};
+    detail::Blocks open_blocks{};
     Hand whole_hand{hand};
 
     for (const auto& meld : melds) {
@@ -160,10 +163,86 @@ namespace mahjong::score_calculator {
       }
     }
 
+    // 両面待ち判定
+    bool is_open_wait(const Blocks& blocks, const Tile& tile)
+    {
+      return tile.index < east.index && ((tile.index % 9 < 6 && blocks[tile.index].num_closed_sequence) ||
+                                         (tile.index % 9 > 2 && blocks[tile.index - 2].num_closed_sequence));
+    }
+
+    // 辺張待ち
+    bool is_edge_wait(const Blocks& blocks, const Tile& tile)
+    {
+      return tile.index < east.index && ((tile.index % 9 == 6 && blocks[tile.index].num_closed_sequence) ||
+                                         (tile.index % 9 == 2 && blocks[tile.index - 2].num_closed_sequence));
+    }
+
+    // 嵌張待ち判定
+    bool is_closed_wait(const Blocks& blocks, const Tile& tile)
+    {
+      return tile.index < east.index && tile.index % 9 >= 1 && tile.index % 9 <= 7 && blocks[tile.index - 1].num_closed_sequence;
+    }
+
+    // 単騎待ち判定
+    bool is_pair_wait(const Blocks& blocks, const Tile& tile)
+    {
+      return blocks[tile.index].num_pair;
+    }
+
+    // シャンポン待ち判定
+    bool is_dual_wait(const Blocks& blocks, const Tile& tile)
+    {
+      return blocks[tile.index].num_closed_triplet;
+    }
+
+    WaitType calc_wait_type(const Blocks& blocks, const Tile& tile)
+    {
+      return {
+          is_open_wait(blocks, tile),
+          is_edge_wait(blocks, tile),
+          is_closed_wait(blocks, tile),
+          is_pair_wait(blocks, tile),
+          is_dual_wait(blocks, tile),
+      };
+    }
+
+    std::pair<bool, score_calculator::Result> standard::calc_fu_han(Hand& hand,
+                                                                    const Blocks& open_blocks,
+                                                                    const Hand& whole_hand,
+                                                                    const Tile& winning_tile,
+                                                                    const Config& config,
+                                                                    const bool is_open)
+    {
+      bool found = false;
+      Result result;
+      WaitType wait_type;
+      Blocks closed_blocks;
+
+      find_winning_hand(hand.tiles, closed_blocks, [&]() {
+        swap_blocks(closed_blocks, [&]() {
+          const auto wait_type_ = calc_wait_type(closed_blocks, winning_tile);
+          const auto result_ = calc_fu_han(closed_blocks, open_blocks, whole_hand, winning_tile, wait_type_, config, is_open);
+
+          if (result.num_yakuman > 0 || result_.num_yakuman > 0) {
+            result = std::max(std::move(result), std::move(result_), [](const Result& x, const Result& y) { return x.num_yakuman < y.num_yakuman; });
+          }
+          else {
+            result = std::max(std::move(result), std::move(result_), [](const Result& x, const Result& y) { return x.num_han < y.num_han || (x.num_han == y.num_han && x.num_fu < y.num_fu); });
+          }
+
+          found = true;
+          wait_type.merge(wait_type_);
+        });
+      });
+
+      return {found, {result, wait_type}};
+    }
+
     Result standard::calc_fu_han(const Blocks& closed_blocks,
                                  const Blocks& open_blocks,
                                  const Hand& whole_hand,
                                  const Tile& winning_tile,
+                                 const WaitType& wait_type,
                                  const Config& config,
                                  const bool is_open)
     {
@@ -175,7 +254,7 @@ namespace mahjong::score_calculator {
         *reinterpret_cast<unsigned int*>(&all_blocks[tid]) |= *reinterpret_cast<const unsigned int*>(&open_blocks[tid]);
       }
 
-      const auto [num_fu, is_pinfu] = calc_fu(all_blocks, winning_tile, config, is_open);
+      const auto [num_fu, is_pinfu] = calc_fu(all_blocks, winning_tile, wait_type, config, is_open);
 
       result.num_fu = num_fu;
 
@@ -188,63 +267,11 @@ namespace mahjong::score_calculator {
       return result;
     }
 
-    std::pair<bool, Result> standard::calc_fu_han(Hand& hand,
-                                                  const Blocks& open_blocks,
-                                                  const Hand& whole_hand,
-                                                  const Tile& winning_tile,
-                                                  const Config& config,
-                                                  const bool is_open)
-    {
-      bool found = false;
-      Result result;
-      Blocks closed_blocks;
-
-      find_winning_hand(hand.tiles, closed_blocks, [&]() {
-        swap_blocks(closed_blocks, [&]() {
-          const auto tmp = calc_fu_han(closed_blocks, open_blocks, whole_hand, winning_tile, config, is_open);
-
-          if (result.num_yakuman > 0 || tmp.num_yakuman > 0) {
-            result = std::max(std::move(result), std::move(tmp), [](const Result& x, const Result& y) { return x.num_yakuman < y.num_yakuman; });
-          }
-          else {
-            result = std::max(std::move(result), std::move(tmp), [](const Result& x, const Result& y) { return x.num_han < y.num_han || (x.num_han == y.num_han && x.num_fu < y.num_fu); });
-          }
-
-          found = true;
-        });
-      });
-
-      return {found, result};
-    }
-
-    bool is_open_wait(const Blocks& blocks, const Tile& tile)
-    {
-      return tile.index < east.index && ((tile.index % 9 < 6 && blocks[tile.index].num_closed_sequence) ||
-                                         (tile.index % 9 > 2 && blocks[tile.index - 2].num_closed_sequence));
-    }
-
-    bool is_edge_wait(const Blocks& blocks, const Tile& tile)
-    {
-      return tile.index < east.index && ((tile.index % 9 == 6 && blocks[tile.index].num_closed_sequence) ||
-                                         (tile.index % 9 == 2 && blocks[tile.index - 2].num_closed_sequence));
-    }
-
-    bool is_closed_wait(const Blocks& blocks, const Tile& tile)
-    {
-      return tile.index < east.index && tile.index % 9 >= 1 && tile.index % 9 <= 7 && blocks[tile.index - 1].num_closed_sequence;
-    }
-
-    bool is_pair_wait(const Blocks& blocks, const Tile& tile)
-    {
-      return blocks[tile.index].num_pair;
-    }
-
-    bool is_dual_wait(const Blocks& blocks, const Tile& tile)
-    {
-      return blocks[tile.index].num_closed_triplet;
-    }
-
-    std::pair<int, bool> standard::calc_fu(Blocks& blocks, const Tile& winning_tile, const Config& config, const bool is_open)
+    std::pair<int, bool> standard::calc_fu(Blocks& blocks,
+                                           const Tile& winning_tile,
+                                           const WaitType& wait_type,
+                                           const Config& config,
+                                           const bool is_open)
     {
       int num_fu = 20; // 副底は20符
 
@@ -269,20 +296,16 @@ namespace mahjong::score_calculator {
         num_fu += (exists_pair(blocks[static_cast<int>(config.round_wind) + static_cast<int>(east)]) ? 2 : 0);
       }
 
-      // 両面待ちフラグ
-      const bool is_open_wait_ = is_open_wait(blocks, winning_tile);
       // 平和フラグ
-      const bool is_pinfu = (!is_open && num_fu == 20 && is_open_wait_);
+      const bool is_pinfu = (!is_open && num_fu == 20 && wait_type.is_open_wait);
 
       // 平和でないとき待ちの符を計算する
       if (!is_pinfu) {
-        if (is_edge_wait(blocks, winning_tile) ||
-            is_closed_wait(blocks, winning_tile) ||
-            is_pair_wait(blocks, winning_tile)) {
+        if (wait_type.is_edge_wait || wait_type.is_closed_wait || wait_type.is_pair_wait) {
           // 辺張待ち, 嵌張待ち, 単騎待ちは2符
           num_fu += 2;
         }
-        else if (is_open_wait_) {
+        else if (wait_type.is_open_wait) {
           // 両面待ちは0符
           // 両面待ちとシャンポン待ちを選択できるときは暗刻の符が付くため両面待ちを選択する方がよい
         }

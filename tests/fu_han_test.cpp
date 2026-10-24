@@ -32,6 +32,11 @@ TEST(FuHan, TestPinfuTsumo)
   EXPECT_EQ(result.num_fu, 20);
   EXPECT_EQ(result.num_han, 2);
   EXPECT_EQ(result.reasons_yaku.at(YakuId::PINFU), 1);
+  EXPECT_TRUE(result.wait_type.is_open_wait);
+  EXPECT_FALSE(result.wait_type.is_edge_wait);
+  EXPECT_FALSE(result.wait_type.is_closed_wait);
+  EXPECT_FALSE(result.wait_type.is_pair_wait);
+  EXPECT_FALSE(result.wait_type.is_dual_wait);
 }
 
 // 平和ロン
@@ -50,6 +55,11 @@ TEST(FuHan, TestPinfuRon)
   EXPECT_EQ(result.num_fu, 30);
   EXPECT_EQ(result.num_han, 1);
   EXPECT_EQ(result.reasons_yaku.at(YakuId::PINFU), 1);
+  EXPECT_TRUE(result.wait_type.is_open_wait);
+  EXPECT_FALSE(result.wait_type.is_edge_wait);
+  EXPECT_FALSE(result.wait_type.is_closed_wait);
+  EXPECT_FALSE(result.wait_type.is_pair_wait);
+  EXPECT_FALSE(result.wait_type.is_dual_wait);
 }
 
 // 食い平和ツモ
@@ -69,6 +79,11 @@ TEST(FuHan, TestOpenTanyaoTsumo)
   EXPECT_EQ(result.num_fu, 30);
   EXPECT_EQ(result.num_han, 1);
   EXPECT_EQ(result.reasons_yaku.at(YakuId::TANYAOCHUU), 1);
+  EXPECT_TRUE(result.wait_type.is_open_wait);
+  EXPECT_FALSE(result.wait_type.is_edge_wait);
+  EXPECT_FALSE(result.wait_type.is_closed_wait);
+  EXPECT_FALSE(result.wait_type.is_pair_wait);
+  EXPECT_FALSE(result.wait_type.is_dual_wait);
 }
 
 // 食い平和ロン
@@ -88,6 +103,11 @@ TEST(FuHan, TestOpenTanyaoRon)
   EXPECT_EQ(result.num_fu, 30);
   EXPECT_EQ(result.num_han, 1);
   EXPECT_EQ(result.reasons_yaku.at(YakuId::TANYAOCHUU), 1);
+  EXPECT_TRUE(result.wait_type.is_open_wait);
+  EXPECT_FALSE(result.wait_type.is_edge_wait);
+  EXPECT_FALSE(result.wait_type.is_closed_wait);
+  EXPECT_FALSE(result.wait_type.is_pair_wait);
+  EXPECT_FALSE(result.wait_type.is_dual_wait);
 }
 
 // 七対子
@@ -106,6 +126,11 @@ TEST(FuHan, TestChiitoitsu)
   EXPECT_EQ(result.num_fu, 25);
   EXPECT_EQ(result.num_han, 2);
   EXPECT_EQ(result.reasons_yaku.at(YakuId::CHIITOITSU), 2);
+  EXPECT_FALSE(result.wait_type.is_open_wait);
+  EXPECT_FALSE(result.wait_type.is_edge_wait);
+  EXPECT_FALSE(result.wait_type.is_closed_wait);
+  EXPECT_FALSE(result.wait_type.is_pair_wait);
+  EXPECT_FALSE(result.wait_type.is_dual_wait);
 }
 
 TEST(FuHan, TestYakuhaiRed)
@@ -124,6 +149,11 @@ TEST(FuHan, TestYakuhaiRed)
   EXPECT_EQ(result.num_han, 2);
   EXPECT_EQ(result.reasons_yaku.at(YakuId::MENZENCHIN_TSUMOHOU), 1);
   EXPECT_EQ(result.reasons_yaku.at(YakuId::YAKUHAI_RED), 1);
+  EXPECT_FALSE(result.wait_type.is_open_wait);
+  EXPECT_FALSE(result.wait_type.is_edge_wait);
+  EXPECT_FALSE(result.wait_type.is_closed_wait);
+  EXPECT_FALSE(result.wait_type.is_pair_wait);
+  EXPECT_TRUE(result.wait_type.is_dual_wait);
 }
 
 TEST(FuHan, TestYakuhaiRedPon)
@@ -142,6 +172,11 @@ TEST(FuHan, TestYakuhaiRedPon)
   EXPECT_EQ(result.num_fu, 30);
   EXPECT_EQ(result.num_han, 1);
   EXPECT_EQ(result.reasons_yaku.at(YakuId::YAKUHAI_RED), 1);
+  EXPECT_FALSE(result.wait_type.is_open_wait);
+  EXPECT_FALSE(result.wait_type.is_edge_wait);
+  EXPECT_TRUE(result.wait_type.is_closed_wait);
+  EXPECT_FALSE(result.wait_type.is_pair_wait);
+  EXPECT_FALSE(result.wait_type.is_dual_wait);
 }
 
 // 平和(単騎待ちではない)
@@ -160,6 +195,11 @@ TEST(FuHan, TestPinfuNotPairWait)
   EXPECT_EQ(result.num_fu, 30);
   EXPECT_EQ(result.num_han, 1);
   EXPECT_EQ(result.reasons_yaku.at(YakuId::PINFU), 1);
+  EXPECT_TRUE(result.wait_type.is_open_wait);
+  EXPECT_FALSE(result.wait_type.is_edge_wait);
+  EXPECT_FALSE(result.wait_type.is_closed_wait);
+  EXPECT_TRUE(result.wait_type.is_pair_wait);
+  EXPECT_FALSE(result.wait_type.is_dual_wait);
 }
 
 // 平和(嵌張待ちではない)
@@ -179,6 +219,11 @@ TEST(FuHan, TestPinfuNotClosedWait)
   EXPECT_EQ(result.num_han, 2);
   EXPECT_EQ(result.reasons_yaku.at(YakuId::PINFU), 1);
   EXPECT_EQ(result.reasons_yaku.at(YakuId::IIPEIKOU), 1);
+  EXPECT_TRUE(result.wait_type.is_open_wait);
+  EXPECT_FALSE(result.wait_type.is_edge_wait);
+  EXPECT_TRUE(result.wait_type.is_closed_wait);
+  EXPECT_FALSE(result.wait_type.is_pair_wait);
+  EXPECT_FALSE(result.wait_type.is_dual_wait);
 }
 
 // 平和(辺張待ちではない)
@@ -197,6 +242,11 @@ TEST(FuHan, TestPinfuNotEdgeWait)
   EXPECT_EQ(result.num_fu, 30);
   EXPECT_EQ(result.num_han, 1);
   EXPECT_EQ(result.reasons_yaku.at(YakuId::PINFU), 1);
+  EXPECT_TRUE(result.wait_type.is_open_wait);
+  EXPECT_TRUE(result.wait_type.is_edge_wait);
+  EXPECT_FALSE(result.wait_type.is_closed_wait);
+  EXPECT_FALSE(result.wait_type.is_pair_wait);
+  EXPECT_FALSE(result.wait_type.is_dual_wait);
 }
 
 // 混一色(食い下がり)
@@ -216,4 +266,9 @@ TEST(FuHan, TestHoniisouKuisagari)
   EXPECT_EQ(result.num_fu, 40);
   EXPECT_EQ(result.num_han, 3);
   EXPECT_EQ(result.reasons_yaku.at(YakuId::HONIISOU), 2);
+  EXPECT_TRUE(result.wait_type.is_open_wait);
+  EXPECT_FALSE(result.wait_type.is_edge_wait);
+  EXPECT_FALSE(result.wait_type.is_closed_wait);
+  EXPECT_FALSE(result.wait_type.is_pair_wait);
+  EXPECT_FALSE(result.wait_type.is_dual_wait);
 }
